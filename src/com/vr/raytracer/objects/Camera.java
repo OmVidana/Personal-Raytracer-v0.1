@@ -1,24 +1,26 @@
 package com.vr.raytracer.objects;
 
-import com.vr.raytracer.utils.Intersection;
-import com.vr.raytracer.utils.Ray;
-import com.vr.raytracer.utils.Vector3D;
+import com.vr.raytracer.tools.Ray;
+import com.vr.raytracer.tools.Vector3D;
+import com.vr.raytracer.tools.Intersection;
 
 import java.awt.*;
 
-public class Camera extends Object3D{
+public class Camera extends Object3D {
     private int width;
     private int height;
     private double fovH;
     private double fovV;
     private double defaultZ = 15.0;
+    private double[] nearFarPlanes = new double[2];
 
-    public Camera(Vector3D position, int width, int height, double fovH, double fovV) {
-        super(position, Color.WHITE);
+    public Camera(Vector3D position, int width, int height, double fovH, double fovV, double nearPlane, double farPlane) {
+        super(position, Color.BLACK);
         setWidth(width);
         setHeight(height);
         setFovH(fovH);
         setFovV(fovV);
+        setNearFarPlanes(new double[]{nearPlane, farPlane});
     }
 
     public Vector3D[][] calculatePositionsToRay() {
@@ -37,8 +39,8 @@ public class Camera extends Object3D{
 
         for (int x = 0; x < positions.length; x++) {
             for (int y = 0; y < positions[x].length; y++) {
-                double posX = minX + ((maxX - minX) / getWidth()) * x;
-                double posY = maxY - ((maxY - minY) / getHeight()) * y;
+                double posX = minX + (((maxX - minX) / getWidth()) * x);
+                double posY = maxY - (((maxY - minY) / getHeight()) * y);
                 positions[x][y] = new Vector3D(posX, posY, posZ);
             }
         }
@@ -85,5 +87,13 @@ public class Camera extends Object3D{
 
     public double getDefaultZ() {
         return defaultZ;
+    }
+
+    public double[] getNearFarPlanes() {
+        return nearFarPlanes;
+    }
+
+    private void setNearFarPlanes(double[] nearFarPlanes) {
+        this.nearFarPlanes = nearFarPlanes;
     }
 }
