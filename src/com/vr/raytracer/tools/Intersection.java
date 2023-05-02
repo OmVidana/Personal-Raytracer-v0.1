@@ -1,4 +1,4 @@
-package com.vr.raytracer.utils;
+package com.vr.raytracer.tools;
 
 import com.vr.raytracer.objects.Object3D;
 
@@ -7,13 +7,6 @@ public class Intersection {
     private Vector3D normal;
     private Vector3D position;
     private Object3D object;
-
-    public Intersection(Vector3D position, double distance, Vector3D normal, Object3D object) {
-        setPosition(position);
-        setDistance(distance);
-        setNormal(normal);
-        setObject(object);
-    }
 
     public double getDistance() {
         return distance;
@@ -45,5 +38,12 @@ public class Intersection {
 
     public void setObject(Object3D object) {
         this.object = object;
+    }
+
+    public Intersection(Vector3D position, double distance, Vector3D normal, Object3D object) {
+        setPosition(position);
+        setDistance(distance);
+        setNormal(normal);
+        setObject(object);
     }
 }

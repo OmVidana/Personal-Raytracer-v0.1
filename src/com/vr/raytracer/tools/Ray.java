@@ -1,8 +1,8 @@
-package com.vr.raytracer.utils;
+package com.vr.raytracer.tools;
 
 public class Ray {
-    Vector3D origin;
-    Vector3D direction;
+    private Vector3D origin;
+    private Vector3D direction;
 
     public Ray(Vector3D origin, Vector3D direction) {
         setOrigin(origin);

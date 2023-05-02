@@ -1,10 +1,10 @@
 package com.vr.raytracer.objects;
 
-import com.vr.raytracer.utils.Intersection;
-import com.vr.raytracer.utils.Ray;
-import com.vr.raytracer.utils.Vector3D;
+import com.vr.raytracer.tools.Ray;
+import com.vr.raytracer.tools.Vector3D;
+import com.vr.raytracer.tools.Intersection;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class Sphere extends Object3D{
     private double radius;
@@ -36,9 +36,9 @@ public class Sphere extends Object3D{
 
     @Override
     public Intersection getIntersection(Ray ray) {
-        Vector3D L = Vector3D.vectorSubtraction(ray.getOrigin(), getPosition());
+        Vector3D L = Vector3D.substract(ray.getOrigin(), getPosition());
         double tca = Vector3D.dotProduct(ray.getDirection(), L);
-        double L2 = Math.pow(Vector3D.getMagnitude(L), 2);
+        double L2 = Math.pow(Vector3D.magnitude(L), 2);
 
         double d2 = Math.pow(tca, 2) - L2 + Math.pow(getRadius(), 2);
 
@@ -48,8 +48,8 @@ public class Sphere extends Object3D{
             double t1 = -tca - d;
 
             double distance = Math.min(t0, t1);
-            Vector3D position = Vector3D.vectorAddition(ray.getOrigin(), Vector3D.scalarMultiplication(ray.getDirection(), distance));
-            Vector3D normal = Vector3D.normalize(Vector3D.vectorSubtraction(position, getPosition()));
+            Vector3D position = Vector3D.add(ray.getOrigin(), Vector3D.scalarMultiplication(ray.getDirection(), distance));
+            Vector3D normal = Vector3D.normalize(Vector3D.substract(position, getPosition()));
             return new Intersection(position, distance, normal, this);
         }
 
