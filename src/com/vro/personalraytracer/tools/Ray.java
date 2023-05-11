@@ -1,4 +1,6 @@
-package com.vr.raytracer.tools;
+package com.vro.personalraytracer.tools;
+
+
 
 public class Ray {
     private Vector3D origin;
@@ -13,7 +15,7 @@ public class Ray {
         return origin;
     }
 
-    public void setOrigin(Vector3D origin) {
+    private void setOrigin(Vector3D origin) {
         this.origin = origin;
     }
 
@@ -21,7 +23,7 @@ public class Ray {
         return Vector3D.normalize(direction);
     }
 
-    public void setDirection(Vector3D direction) {
+    private void setDirection(Vector3D direction) {
         this.direction = direction;
     }
 }

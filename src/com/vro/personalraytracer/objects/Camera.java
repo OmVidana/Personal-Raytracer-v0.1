@@ -1,8 +1,9 @@
-package com.vr.raytracer.objects;
+package com.vro.personalraytracer.objects;
 
-import com.vr.raytracer.tools.Ray;
-import com.vr.raytracer.tools.Vector3D;
-import com.vr.raytracer.tools.Intersection;
+import com.vro.personalraytracer.objects.Object3D;
+import com.vro.personalraytracer.tools.Intersection;
+import com.vro.personalraytracer.tools.Ray;
+import com.vro.personalraytracer.tools.Vector3D;
 
 import java.awt.*;
 
@@ -50,7 +51,7 @@ public class Camera extends Object3D {
 
     @Override
     public Intersection getIntersection(Ray ray) {
-        return new Intersection(Vector3D.ZERO(), -1, Vector3D.ZERO(), null);
+        return new Intersection(new Vector3D(), -1, new Vector3D(), null);
     }
 
     public int getWidth() {

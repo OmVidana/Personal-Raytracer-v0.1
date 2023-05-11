@@ -1,8 +1,9 @@
-package com.vr.raytracer.objects;
+package com.vro.personalraytracer.objects;
 
-import com.vr.raytracer.tools.Intersection;
-import com.vr.raytracer.tools.Ray;
-import com.vr.raytracer.tools.Vector3D;
+import com.vro.personalraytracer.tools.Barycentric;
+import com.vro.personalraytracer.tools.Intersection;
+import com.vro.personalraytracer.tools.Ray;
+import com.vro.personalraytracer.tools.Vector3D;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -10,8 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
-public class Model3D extends Object3D{
+public class Model3D extends Object3D {
     private List<Triangle> triangles;
 
     public Model3D(Vector3D position, Triangle[] triangles, Color color) {
@@ -26,11 +26,11 @@ public class Model3D extends Object3D{
     public void setTriangles(Triangle[] triangles) {
         Vector3D position = getPosition();
         Set<Vector3D> uniqueVertices = new HashSet<>();
-        for(Triangle triangle : triangles){
+        for (Triangle triangle : triangles) {
             uniqueVertices.addAll(Arrays.asList(triangle.getVertices()));
         }
 
-        for(Vector3D vertex : uniqueVertices){
+        for (Vector3D vertex : uniqueVertices) {
             vertex.setX(vertex.getX() + position.getX());
             vertex.setY(vertex.getY() + position.getY());
             vertex.setZ(vertex.getZ() + position.getZ());
@@ -42,21 +42,27 @@ public class Model3D extends Object3D{
     @Override
     public Intersection getIntersection(Ray ray) {
         double distance = -1;
-        Vector3D normal = Vector3D.ZERO();
-        Vector3D position = Vector3D.ZERO();
+        Vector3D normal = new Vector3D();
+        Vector3D position = new Vector3D();
 
-        for(Triangle triangle : getTriangles()){
+        for (Triangle triangle : getTriangles()) {
             Intersection intersection = triangle.getIntersection(ray);
             double intersectionDistance = intersection.getDistance();
-            if(intersection != null && intersectionDistance > 0 &&
-                    (intersectionDistance < distance || distance < 0)){
+            if (intersection != null && intersectionDistance > 0 &&
+                    (intersectionDistance < distance || distance < 0)) {
                 distance = intersectionDistance;
-                position = Vector3D.add(ray.getOrigin(), Vector3D.scalarMultiplication(ray.getDirection(), distance));
-                normal = triangle.getNormal();
+                position = Vector3D.vectorAddition(ray.getOrigin(), Vector3D.scalarMultiplication(ray.getDirection(), distance));
+                //normal = triangle.getNormal();
+                normal = new Vector3D();
+                double[] uVw = Barycentric.CalculateBarycentricCoordinates(position, triangle);
+                Vector3D[] normals = triangle.getNormals();
+                for (int i = 0; i < uVw.length; i++) {
+                    normal = Vector3D.vectorAddition(normal, Vector3D.scalarMultiplication(normals[i], uVw[i]));
+                }
             }
         }
 
-        if(distance == -1){
+        if (distance == -1) {
             return null;
         }
 

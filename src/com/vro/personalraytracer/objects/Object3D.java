@@ -1,10 +1,10 @@
-package com.vr.raytracer.objects;
+package com.vro.personalraytracer.objects;
 
-import com.vr.raytracer.tools.Vector3D;
+import com.vro.personalraytracer.tools.Vector3D;
 
 import java.awt.*;
 
-public abstract class Object3D implements IIntersectable{
+public abstract class Object3D implements IsIntersectable {
     private Color color;
     private Vector3D position;
 
