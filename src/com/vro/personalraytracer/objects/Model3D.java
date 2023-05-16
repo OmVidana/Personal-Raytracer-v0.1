@@ -28,22 +28,7 @@ public class Model3D extends Object3D {
      */
     public Model3D(Vector3D position, Triangle[] triangles, Color color) {
         super(position, color);
-        setTriangles(triangles, new Vector3D(1,1,1));
-
-    }
-
-    /**
-     * Instantiates a new Model 3D with a given scale.
-     *
-     * @param position  Vector3D Model3D Position.
-     * @param scale     Model3D Scale.
-     * @param triangles Triangle[] Model3D Triangles.
-     * @param color     Model3D Color.
-     */
-    public Model3D(Vector3D position, Vector3D scale, Triangle[] triangles, Color color) {
-        super(position, scale, color);
-        setTriangles(triangles, scale);
-
+        setTriangles(triangles);
     }
 
     /**
@@ -59,9 +44,8 @@ public class Model3D extends Object3D {
      * Sets the Model3D Triangles.
      *
      * @param triangles Triangle[], array of Triangles.
-     * @param scale     Model3D Scale.
      */
-    public void setTriangles(Triangle[] triangles, Vector3D scale) {
+    public void setTriangles(Triangle[] triangles) {
         Vector3D position = getPosition();
         Set<Vector3D> uniqueVertices = new HashSet<>();
         for (Triangle triangle : triangles) {
@@ -69,9 +53,9 @@ public class Model3D extends Object3D {
         }
 
         for (Vector3D vertex : uniqueVertices) {
-            vertex.setX(scale.getX() * (vertex.getX() + position.getX()));
-            vertex.setY(scale.getY() * (vertex.getY() + position.getY()));
-            vertex.setZ(scale.getZ() *(vertex.getZ() + position.getZ()));
+            vertex.setX(vertex.getX() + position.getX());
+            vertex.setY(vertex.getY() + position.getY());
+            vertex.setZ(vertex.getZ() + position.getZ());
         }
 
         this.triangles = Arrays.asList(triangles);
@@ -105,29 +89,5 @@ public class Model3D extends Object3D {
         }
 
         return new Intersection(position, distance, normal, this);
-    }
-
-    @Override
-    public void increaseSize(Vector3D scale) {
-        Vector3D position = getPosition();
-        for (Triangle triangle : getTriangles()) {
-            for (Vector3D vertex : triangle.getVertices()) {
-                vertex.setX(scale.getX() * (vertex.getX() + position.getX()));
-                vertex.setY(scale.getY() * (vertex.getY() + position.getY()));
-                vertex.setZ(scale.getZ() * (vertex.getZ() + position.getZ()));
-            }
-        }
-    }
-
-    @Override
-    public void decreaseSize(Vector3D scale) {
-        Vector3D position = getPosition();
-        for (Triangle triangle : getTriangles()) {
-            for (Vector3D vertex : triangle.getVertices()) {
-                vertex.setX((vertex.getX() + position.getX()) / scale.getX());
-                vertex.setY((vertex.getY() + position.getY()) / scale.getY());
-                vertex.setZ((vertex.getZ() + position.getZ()) / scale.getZ());
-            }
-        }
     }
 }

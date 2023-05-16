@@ -30,7 +30,7 @@ public abstract class OBJReader {
      * @param color  the color
      * @return the model 3 d
      */
-    public static Model3D getModel3D(String path, Vector3D origin, Vector3D scale, Color color) {
+    public static Model3D getModel3D(String path, Vector3D origin, Color color) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(objFolder + path));
 
@@ -169,7 +169,7 @@ public abstract class OBJReader {
                     triangle.setNormals(triangleNormals[0], triangleNormals[1], triangleNormals[2]);
                 }
             }
-            return new Model3D(origin, scale, triangles.toArray(new Triangle[triangles.size()]), color);
+            return new Model3D(origin, triangles.toArray(new Triangle[triangles.size()]), color);
         } catch (FileNotFoundException ex) {
             System.err.println("File not found");
         } catch (IOException ex) {
