@@ -11,8 +11,8 @@ public interface IsIntersectable {
     /**
      * Gets the intersection between an Object3D and a Ray.
      *
-     * @param ray the ray
-     * @return the intersection which contains a position, distance, normal and Object3D values.
+     * @param ray the ray.
+     * @return Intersection. Contains a position, distance, normal and Object3D values.
      */
     Intersection getIntersection(Ray ray);
 

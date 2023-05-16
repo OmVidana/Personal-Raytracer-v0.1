@@ -13,9 +13,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Obj reader.
+ */
 public abstract class OBJReader {
+    /**
+     * The constant objFolder.
+     */
     public static final String objFolder = "src/com/vro/personalraytracer/objs/";
 
+    /**
+     * Gets model 3 d.
+     *
+     * @param path   the path
+     * @param origin the origin
+     * @param color  the color
+     * @return the model 3 d
+     */
     public static Model3D getModel3D(String path, Vector3D origin, Color color) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(objFolder + path));

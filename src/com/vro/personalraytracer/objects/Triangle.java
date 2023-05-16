@@ -4,21 +4,50 @@ import com.vro.personalraytracer.tools.Intersection;
 import com.vro.personalraytracer.tools.Ray;
 import com.vro.personalraytracer.tools.Vector3D;
 
+/**
+ * The type Triangle.
+ */
 public class Triangle implements IsIntersectable {
+    /**
+     * The constant EPSILON.
+     */
     public static final double EPSILON = 0.0000001;
     private Vector3D[] vertices;
     private Vector3D[] normals;
 
+    /**
+     * Instantiates a new Triangle.
+     *
+     * @param v1 the v 1
+     * @param v2 the v 2
+     * @param v3 the v 3
+     */
     public Triangle(Vector3D v1, Vector3D v2, Vector3D v3) {
         setVertices(v1, v2, v3);
         setNormals(null);
     }
 
+    /**
+     * Instantiates a new Triangle.
+     *
+     * @param v1 the v 1
+     * @param v2 the v 2
+     * @param v3 the v 3
+     * @param n1 the n 1
+     * @param n2 the n 2
+     * @param n3 the n 3
+     */
     public Triangle(Vector3D v1, Vector3D v2, Vector3D v3, Vector3D n1, Vector3D n2, Vector3D n3) {
         this(v1, v2, v3);
         setNormals(n1, n2, n3);
     }
 
+    /**
+     * Instantiates a new Triangle.
+     *
+     * @param vertices the vertices
+     * @param normal   the normal
+     */
     public Triangle(Vector3D[] vertices, Vector3D[] normal) {
         if (vertices.length == 3) {
             setVertices(vertices[0], vertices[1], vertices[2]);
@@ -28,6 +57,11 @@ public class Triangle implements IsIntersectable {
         setNormals(normal);
     }
 
+    /**
+     * Get vertices vector 3 d [ ].
+     *
+     * @return the vector 3 d [ ]
+     */
     public Vector3D[] getVertices() {
         return vertices;
     }
@@ -36,10 +70,22 @@ public class Triangle implements IsIntersectable {
         this.vertices = vertices;
     }
 
+    /**
+     * Sets vertices.
+     *
+     * @param v1 the v 1
+     * @param v2 the v 2
+     * @param v3 the v 3
+     */
     public void setVertices(Vector3D v1, Vector3D v2, Vector3D v3) {
         setVertices(new Vector3D[]{v1, v2, v3});
     }
 
+    /**
+     * Get normals vector 3 d [ ].
+     *
+     * @return the vector 3 d [ ]
+     */
     public Vector3D[] getNormals() {
         if (normals == null) {
             Vector3D normal = getNormal();
@@ -48,6 +94,11 @@ public class Triangle implements IsIntersectable {
         return normals;
     }
 
+    /**
+     * Gets normal.
+     *
+     * @return the normal
+     */
     public Vector3D getNormal() {
         Vector3D normal = new Vector3D();
         Vector3D[] normals = this.normals;
@@ -75,6 +126,13 @@ public class Triangle implements IsIntersectable {
         this.normals = normals;
     }
 
+    /**
+     * Sets normals.
+     *
+     * @param normal1 the normal 1
+     * @param normal2 the normal 2
+     * @param normal3 the normal 3
+     */
     public void setNormals(Vector3D normal1, Vector3D normal2, Vector3D normal3) {
         Vector3D[] normals = new Vector3D[]{normal1, normal2, normal3};
         setNormals(normals);

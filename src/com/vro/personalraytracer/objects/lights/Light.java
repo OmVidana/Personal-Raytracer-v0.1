@@ -9,6 +9,7 @@ import java.awt.*;
 
 /**
  * Abstract Class Light. Any Type of Light will extend this class.
+ *
  * @author Omar Vidaña Rodríguez - complemented by Jafet Rodríguez' Code.
  */
 public abstract class Light extends Object3D {
@@ -18,9 +19,9 @@ public abstract class Light extends Object3D {
     /**
      * Instantiates a new Light.
      *
-     * @param position  Light position
-     * @param color     Light color
-     * @param intensity Light intensity
+     * @param position  Light Position.
+     * @param color     Light Color.
+     * @param intensity Light Intensity.
      */
     public Light(Vector3D position, Color color, double intensity) {
         super(position, color);
@@ -30,7 +31,7 @@ public abstract class Light extends Object3D {
     /**
      * Gets the Light intensity.
      *
-     * @return Light intensity
+     * @return Double. Light Intensity.
      */
     public double getIntensity() {
         return intensity;
@@ -39,24 +40,17 @@ public abstract class Light extends Object3D {
     /**
      * Sets the Light intensity.
      *
-     * @param intensity Light intensity
+     * @param intensity Light Intensity.
      */
     public void setIntensity(double intensity) {
         this.intensity = intensity;
     }
 
     /**
-     * Gets n dot l.
+     * Gets the N dot product L.
      *
-     * @param intersection Light intersection
-     * @return Dot product of N and L.
-     * <pre>
-     * Where:
-     * <br>
-     *  N - Object Normal.
-     * <br>
-     *  L - Light Direction.
-     * </pre>
+     * @param intersection Light Intersection.
+     * @return Double. Dot product of N and L. <pre> Where: <br>  N - Object Normal. <br>  L - Light Direction. </pre>.
      */
     public abstract double getNDotL(Intersection intersection);
 

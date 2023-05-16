@@ -3,6 +3,8 @@ package com.vro.personalraytracer.tools;
 import com.vro.personalraytracer.objects.Triangle;
 
 /**
+ * The type Barycentric.
+ *
  * @author Jafet Rodríguez
  * @see <a href="https://www.amazon.com/Real-Time-Collision-Detection-Interactive-Technology/dp/1558607323">Christer Ericson's Real-Time Collision Detection</a>
  */
@@ -11,7 +13,14 @@ public class Barycentric {
     private Barycentric() {
     }
 
-    // Based on Christer Ericson's Real-Time Collision Detection
+    /**
+     * Calculate barycentric coordinates double [ ].
+     *
+     * @param point    the point
+     * @param triangle the triangle
+     * @return the double [ ]
+     */
+// Based on Christer Ericson's Real-Time Collision Detection
     public static double[] CalculateBarycentricCoordinates(Vector3D point, Triangle triangle) {
         double u, v, w;
         Vector3D[] vertices = triangle.getVertices();

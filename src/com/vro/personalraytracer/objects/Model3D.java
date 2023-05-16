@@ -11,18 +11,40 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Class Model3D. Creates a Model 3D which extends Object3D. This model is created from Triangles and their normals.
+ *
+ * @author Omar Vidaña Rodríguez - complemented by Jafet Rodríguez' Code.
+ */
 public class Model3D extends Object3D {
     private List<Triangle> triangles;
 
+    /**
+     * Instantiates a new Model3D.
+     *
+     * @param position  Vector3D Model3D Position.
+     * @param triangles Triangle[] Model3D Triangles.
+     * @param color     Model3D Color.
+     */
     public Model3D(Vector3D position, Triangle[] triangles, Color color) {
         super(position, color);
         setTriangles(triangles);
     }
 
+    /**
+     * Gets the Model3D Triangles.
+     *
+     * @return List of Triangles.
+     */
     public List<Triangle> getTriangles() {
         return triangles;
     }
 
+    /**
+     * Sets the Model3D Triangles.
+     *
+     * @param triangles Triangle[], array of Triangles.
+     */
     public void setTriangles(Triangle[] triangles) {
         Vector3D position = getPosition();
         Set<Vector3D> uniqueVertices = new HashSet<>();

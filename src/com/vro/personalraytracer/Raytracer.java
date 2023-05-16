@@ -13,15 +13,27 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * The type Raytracer.
+ */
 public class Raytracer {
+    /**
+     * The constant renderPath.
+     */
     public static final String renderPath = "src/com/vro/personalraytracer/renders/";
+
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         System.out.println(new Date());
 
         Scene selectedScene = sceneManager();
 
         BufferedImage image = raytrace(selectedScene);
-        File outputImage = new File(renderPath + "PointLightTest.png");
+        File outputImage = new File(renderPath + "testDefZ.png");
         try {
             ImageIO.write(image, "png", outputImage);
         } catch (Exception e) {
@@ -31,10 +43,16 @@ public class Raytracer {
         System.out.println(new Date());
     }
 
+    /**
+     * Raytrace buffered image.
+     *
+     * @param scene the scene
+     * @return the buffered image
+     */
     public static BufferedImage raytrace(Scene scene) {
         Camera mainCamera = scene.getCamera();
         double[] nearFarPlanes = mainCamera.getNearFarPlanes();
-        double cameraZ = mainCamera.getPosition().getZ();
+//        double cameraZ = mainCamera.getPosition().getZ();
         BufferedImage image = new BufferedImage(mainCamera.getWidth(), mainCamera.getHeight(), BufferedImage.TYPE_INT_RGB);
         java.util.List<Object3D> objects = scene.getObjects();
         java.util.List<Light> lights = scene.getLights();
@@ -47,7 +65,7 @@ public class Raytracer {
                 double z = positionsToRaytrace[i][j].getZ() + mainCamera.getPosition().getZ();
 
                 Ray ray = new Ray(mainCamera.getPosition(), new Vector3D(x, y, z));
-                Intersection closestIntersection = raycast(ray, objects, null, new double[]{cameraZ + nearFarPlanes[0], cameraZ + nearFarPlanes[1]});
+                Intersection closestIntersection = raycast(ray, objects, null, new double[]{nearFarPlanes[0], nearFarPlanes[1]});
 
                 Color pixelColor = Color.BLACK;
                 if (closestIntersection != null) {
@@ -75,6 +93,14 @@ public class Raytracer {
         return image;
     }
 
+    /**
+     * Clamp float.
+     *
+     * @param value the value
+     * @param min   the min
+     * @param max   the max
+     * @return the float
+     */
     public static float clamp(double value, double min, double max) {
         if (value < min) {
             return (float) min;
@@ -85,6 +111,13 @@ public class Raytracer {
         return (float) value;
     }
 
+    /**
+     * Add color color.
+     *
+     * @param original   the original
+     * @param otherColor the other color
+     * @return the color
+     */
     public static Color addColor(Color original, Color otherColor) {
         float red = clamp((original.getRed() / 255.0) + (otherColor.getRed() / 255.0), 0, 1);
         float green = clamp((original.getGreen() / 255.0) + (otherColor.getGreen() / 255.0), 0, 1);
@@ -92,11 +125,19 @@ public class Raytracer {
         return new Color(red, green, blue);
     }
 
+    /**
+     * Raycast intersection.
+     *
+     * @param ray            the ray
+     * @param objects        the objects
+     * @param caster         the caster
+     * @param clippingPlanes the clipping planes
+     * @return the intersection
+     */
     public static Intersection raycast(Ray ray, List<Object3D> objects, Object3D caster, double[] clippingPlanes) {
         Intersection closestIntersection = null;
 
-        for (int k = 0; k < objects.size(); k++) {
-            Object3D currentObj = objects.get(k);
+        for (Object3D currentObj : objects) {
             if (caster == null || !currentObj.equals(caster)) {
                 Intersection intersection = currentObj.getIntersection(ray);
                 if (intersection != null) {
@@ -114,13 +155,17 @@ public class Raytracer {
         return closestIntersection;
     }
 
+    /**
+     * Scene manager scene.
+     *
+     * @return the scene
+     */
     public static Scene sceneManager() {
         Scene finalScene;
 
         Scene scene01 = new Scene();
-        scene01.setCamera(new Camera(new Vector3D(0, 0, -4), 800, 800, 60, 60, 0.6, 50.0));
-        scene01.addLight(new DirectionalLight(new Vector3D(0.0, 0.0, 1.0), Color.CYAN, 1.1));
-        scene01.addLight(new DirectionalLight(new Vector3D(0.0, -1.0, 0.0), Color.RED, 1.4));
+        scene01.setCamera(new Camera(new Vector3D(0, 0, -4), 500, 500, 90, 90, 0.6, 50.0));
+        scene01.addLight(new DirectionalLight(new Vector3D(), new Vector3D(0.0, 0.0, 1.0), Color.WHITE, 2.2));
 
         scene01.addObject(new Sphere(new Vector3D(0.5, 1, 8), 0.8, Color.RED));
         scene01.addObject(new Sphere(new Vector3D(0.1, 1, 6), 0.5, Color.BLUE));
@@ -131,12 +176,13 @@ public class Raytracer {
                 Color.GREEN));
         scene01.addObject(OBJReader.getModel3D("Cube.obj", new Vector3D(0, -2.5, 1), Color.CYAN));
         scene01.addObject(OBJReader.getModel3D("SmallTeapot.obj", new Vector3D(0, -2.5, 1), Color.CYAN));
+        scene01.addObject(OBJReader.getModel3D("SmallTeapot.obj", new Vector3D(2, -2.5, 25), Color.BLUE));
 
         Scene scene02 = new Scene();
         scene02.setCamera(new Camera(new Vector3D(0, 0, -4), 800, 800, 60, 60, 0.6, 50.0));
-        scene02.addLight(new DirectionalLight(new Vector3D(0.0, 0.0, 1.0), Color.WHITE, 0.5));
-        scene02.addLight(new DirectionalLight(new Vector3D(0.0, -0.1, 0.1), Color.WHITE, 0.2));
-        scene02.addLight(new DirectionalLight(new Vector3D(-0.2, -0.1, 0.0), Color.WHITE, 0.2));
+        scene02.addLight(new DirectionalLight(new Vector3D(), new Vector3D(0.0, 0.0, 1.0), Color.WHITE, 0.5));
+        scene02.addLight(new DirectionalLight(new Vector3D(), new Vector3D(0.0, -0.1, 0.1), Color.WHITE, 0.2));
+        scene02.addLight(new DirectionalLight(new Vector3D(), new Vector3D(-0.2, -0.1, 0.0), Color.WHITE, 0.2));
         scene02.addObject(new Sphere(new Vector3D(0.0, 1.0, 5.0), 0.5, Color.RED));
         scene02.addObject(new Sphere(new Vector3D(0.5, 1.0, 4.5), 0.25, new Color(200, 255, 0)));
         scene02.addObject(new Sphere(new Vector3D(0.35, 1.0, 4.5), 0.3, Color.BLUE));
@@ -149,12 +195,12 @@ public class Raytracer {
 
         Scene scene03 = new Scene();
         scene03.setCamera(new Camera(new Vector3D(0, 0, -4), 500, 500, 60, 60, 0.6, 50));
-        scene03.addLight(new PointLight(new Vector3D(0, 0, 5), Color.WHITE, 0.9));
+        scene03.addLight(new PointLight(new Vector3D(0, 0, 5), Color.WHITE, 0.7));
         scene03.addObject(new Sphere(new Vector3D(-2, 0, 5), 0.3, Color.BLUE));
         scene03.addObject(new Sphere(new Vector3D(2, 0, 5), 0.3, Color.PINK));
         scene03.addObject(new Sphere(new Vector3D(0, 0, 10), 0.5, Color.BLUE));
 
-        finalScene = scene03;
+        finalScene = scene01;
         return finalScene;
     }
 }
