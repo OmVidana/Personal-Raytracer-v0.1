@@ -1,5 +1,6 @@
 package com.vro.personalraytracer;
 
+import com.vro.personalraytracer.materials.BlinnPhongShading;
 import com.vro.personalraytracer.objects.Camera;
 import com.vro.personalraytracer.objects.Object3D;
 import com.vro.personalraytracer.objects.lights.DirectionalLight;
@@ -30,7 +31,7 @@ public class ParallelRT {
 
         parallelMethod(selectedScene);
 
-        File outputImage = new File(renderPath + "shadowBox1.png");
+        File outputImage = new File(renderPath + "bowlingblinnPhong.png");
         try {
             ImageIO.write(render, "png", outputImage);
         } catch (Exception e) {
@@ -71,92 +72,56 @@ public class ParallelRT {
     }
 
     public static Runnable raytrace(int i, int j, Camera mainCamera, double[] nearFarPlanes, List<Object3D> objects, List<Light> lights, Vector3D[][] positionsToRaytrace) {
-        return new Runnable() {
-            @Override
-            public void run() {
-                double x = positionsToRaytrace[i][j].getX() + mainCamera.getPosition().getX();
-                double y = positionsToRaytrace[i][j].getY() + mainCamera.getPosition().getY();
-                double z = positionsToRaytrace[i][j].getZ() + mainCamera.getPosition().getZ();
+        return () -> {
+            double x = positionsToRaytrace[i][j].getX() + mainCamera.getPosition().getX();
+            double y = positionsToRaytrace[i][j].getY() + mainCamera.getPosition().getY();
+            double z = positionsToRaytrace[i][j].getZ() + mainCamera.getPosition().getZ();
 
-                Ray ray = new Ray(mainCamera.getPosition(), new Vector3D(x, y, z));
-                Intersection closestIntersection = raycast(ray, objects, null, new double[]{nearFarPlanes[0], nearFarPlanes[1]});
+            Ray ray = new Ray(mainCamera.getPosition(), new Vector3D(x, y, z));
+            Intersection closestIntersection = raycast(ray, objects, null, new double[]{nearFarPlanes[0], nearFarPlanes[1]});
 
-                Color pixelColor = Color.BLACK;
-                if (closestIntersection != null) {
-                    Color objColor = closestIntersection.getObject().getColor();
+            Color pixelColor = Color.BLACK;
+            if (closestIntersection != null) {
+                Color objColor = closestIntersection.getObject().getColor();
 
-                    boolean insideShadow = false;
-                    for (Light light : lights) {
-                        double nDotL = light.getNDotL(closestIntersection);
-                        double intensity = light.getIntensity() * nDotL;
-                        double lightDistance = Vector3D.vectorSubstraction(light.getPosition(), closestIntersection.getPosition()).getMagnitude();
-                        Color lightColor = light.getColor();
+                boolean insideShadow = false;
+                for (Light light : lights) {
+                    double nDotL = light.getNDotL(closestIntersection);
+                    double intensity = light.getIntensity() * nDotL;
+                    double lightDistance = Vector3D.vectorSubstraction(light.getPosition(), closestIntersection.getPosition()).getMagnitude();
+                    Color lightColor = light.getColor();
+                    double lightFallOff = (intensity / Math.pow(lightDistance, 2));
+                    double[] lightColors = new double[]{lightColor.getRed() / 255.0, lightColor.getGreen() / 255.0, lightColor.getBlue() / 255.0};
+                    double[] objColors = new double[]{objColor.getRed() / 255.0, objColor.getGreen() / 255.0, objColor.getBlue() / 255.0};
 
-                        double[] lightColors = new double[]{lightColor.getRed() / 255.0, lightColor.getGreen() / 255.0, lightColor.getBlue() / 255.0};
-                        double[] objColors = new double[]{objColor.getRed() / 255.0, objColor.getGreen() / 255.0, objColor.getBlue() / 255.0};
-
-                        for (Object3D object : objects) {
-                            if (!object.equals(closestIntersection.getObject())) {
-//                                Intersection shadowIntersection = object.getIntersection(new Ray(closestIntersection.getPosition(), Vector3D.normalize(Vector3D.vectorSubstraction(getPosition(), intersection.getPosition())));
-                                    Ray shadowRay = new Ray(closestIntersection.getPosition(), Vector3D.normalize(Vector3D.vectorSubstraction(light.getPosition(), closestIntersection.getPosition())));
-                                    Intersection shadowIntersection = object.getIntersection(shadowRay);
-                                if (shadowIntersection != null && shadowIntersection.getDistance() > 0 && shadowIntersection.getDistance() < closestIntersection.getDistance()) {
-                                    insideShadow = true;
-                                    break;
-                                }
+                    for (Object3D object : objects) {
+                        if (!object.equals(closestIntersection.getObject())) {
+                                Ray shadowRay = new Ray(closestIntersection.getPosition(), Vector3D.normalize(Vector3D.vectorSubstraction(light.getPosition(), closestIntersection.getPosition())));
+                                Intersection shadowIntersection = object.getIntersection(shadowRay);
+                            if (shadowIntersection != null && shadowIntersection.getDistance() > 0 && shadowIntersection.getDistance() < closestIntersection.getDistance()) {
+                                insideShadow = true;
+                                break;
                             }
-                        }
-
-                        if (!insideShadow) {
-                            for (int colorIndex = 0; colorIndex < objColors.length; colorIndex++) {
-                                objColors[colorIndex] *= (intensity / Math.pow(lightDistance, 2)) * lightColors[colorIndex];
-                            }
-
-                            Color diffuse = new Color(clamp(objColors[0], 0, 1), clamp(objColors[1], 0, 1), clamp(objColors[2], 0, 1));
-                            pixelColor = addColor(pixelColor, diffuse);
                         }
                     }
-                }
 
-                setRGB(i, j, pixelColor.getRGB());
+                    if (!insideShadow) {
+                        for (int colorIndex = 0; colorIndex < objColors.length; colorIndex++) {
+                            objColors[colorIndex] *= lightFallOff * ColorsHandler.addColor(ColorsHandler.addColor(BlinnPhongShading.getAmbient(closestIntersection, 0.02), BlinnPhongShading.getDiffuse(closestIntersection, light, 0.25)), BlinnPhongShading.getSpecular(closestIntersection, mainCamera.getPosition(), light, 0.75, 100)).getRed() * lightColors[colorIndex];
+                        }
+
+                        Color diffuse = new Color(ColorsHandler.clamp(objColors[0], 0, 1), ColorsHandler.clamp(objColors[1], 0, 1), ColorsHandler.clamp(objColors[2], 0, 1));
+                        pixelColor = ColorsHandler.addColor(pixelColor, diffuse);
+                    }
+                }
             }
+
+            setRGB(i, j, pixelColor.getRGB());
         };
     }
 
     public static synchronized void setRGB(int x, int y, int pixelColor) {
         render.setRGB(x, y, pixelColor);
-    }
-
-    /**
-     * Clamp float.
-     *
-     * @param value the value
-     * @param min   the min
-     * @param max   the max
-     * @return the float
-     */
-    public static float clamp(double value, double min, double max) {
-        if (value < min) {
-            return (float) min;
-        }
-        if (value > max) {
-            return (float) max;
-        }
-        return (float) value;
-    }
-
-    /**
-     * Add color color.
-     *
-     * @param original   the original
-     * @param otherColor the other color
-     * @return the color
-     */
-    public static Color addColor(Color original, Color otherColor) {
-        float red = clamp((original.getRed() / 255.0) + (otherColor.getRed() / 255.0), 0, 1);
-        float green = clamp((original.getGreen() / 255.0) + (otherColor.getGreen() / 255.0), 0, 1);
-        float blue = clamp((original.getBlue() / 255.0) + (otherColor.getBlue() / 255.0), 0, 1);
-        return new Color(red, green, blue);
     }
 
     /**
@@ -199,9 +164,9 @@ public class ParallelRT {
 
         Scene scene01 = new Scene();
         scene01.setCamera(new Camera(new Vector3D(0, 0, -4), 640, 360, 90, 60, 0.6, 50.0));
-        scene01.addLight(new DirectionalLight(new Vector3D(0, 1, 0), new Vector3D(0, 1, 1), Color.WHITE, 2));
-        scene01.addLight(new PointLight(new Vector3D(0, 3, 0), Color.WHITE, 6));
-        scene01.addLight(new PointLight(new Vector3D(0, 3, 8), Color.WHITE, 6));
+//        scene01.addLight(new DirectionalLight(new Vector3D(0, 1, 0), new Vector3D(0, 1, 1), Color.WHITE, 1));
+        scene01.addLight(new PointLight(new Vector3D(4, 3, 7), Color.WHITE, 0.4));
+        scene01.addLight(new PointLight(new Vector3D(-4, 3, 7), Color.WHITE, 0.4));
         scene01.addObject(OBJReader.getModel3D("BowlingFloor.obj", new Vector3D(0, -2, 0), new Vector3D(1, 1, 1), new Color(180, 100, 45)));
         scene01.addObject(OBJReader.getModel3D("BowlingWall.obj", new Vector3D(0, -2, 12.5), new Vector3D(1, 1, 1), new Color(11, 1, 74)));
         scene01.addObject(OBJReader.getModel3D("BowlingBall.obj", new Vector3D(1.25, -2, 2.5), new Vector3D(1, 1, 1), Color.WHITE));

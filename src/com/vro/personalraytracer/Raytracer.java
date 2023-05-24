@@ -1,5 +1,6 @@
 package com.vro.personalraytracer;
 
+import com.vro.personalraytracer.materials.BlinnPhongShading;
 import com.vro.personalraytracer.objects.*;
 import com.vro.personalraytracer.objects.lights.DirectionalLight;
 import com.vro.personalraytracer.objects.lights.Light;
@@ -77,16 +78,29 @@ public class Raytracer {
                         double intensity = light.getIntensity() * nDotL;
                         double lightDistance = Vector3D.vectorSubstraction(light.getPosition(), closestIntersection.getPosition()).getMagnitude();
                         Color lightColor = light.getColor();
-
+                        double lightFallOff = (intensity / Math.pow(lightDistance, 2));
                         double[] lightColors = new double[]{lightColor.getRed() / 255.0, lightColor.getGreen() / 255.0, lightColor.getBlue() / 255.0};
                         double[] objColors = new double[]{objColor.getRed() / 255.0, objColor.getGreen() / 255.0, objColor.getBlue() / 255.0};
 
-                        for (int colorIndex = 0; colorIndex < objColors.length; colorIndex++) {
-                            objColors[colorIndex] *= (intensity / Math.pow(lightDistance, 2)) * lightColors[colorIndex];
+                        for (Object3D object : objects) {
+                            if (!object.equals(closestIntersection.getObject())) {
+                                Ray shadowRay = new Ray(closestIntersection.getPosition(), Vector3D.normalize(Vector3D.vectorSubstraction(light.getPosition(), closestIntersection.getPosition())));
+                                Intersection shadowIntersection = object.getIntersection(shadowRay);
+                                if (shadowIntersection != null && shadowIntersection.getDistance() > 0 && shadowIntersection.getDistance() < closestIntersection.getDistance()) {
+                                    insideShadow = true;
+                                    break;
+                                }
+                            }
                         }
 
-                        Color diffuse = new Color(clamp(objColors[0], 0, 1), clamp(objColors[1], 0, 1), clamp(objColors[2], 0, 1));
-                        pixelColor = addColor(pixelColor, diffuse);
+                        if (!insideShadow) {
+                            for (int colorIndex = 0; colorIndex < objColors.length; colorIndex++) {
+                                objColors[colorIndex] *= lightFallOff * ColorsHandler.addColor(ColorsHandler.addColor(BlinnPhongShading.getAmbient(closestIntersection, 0.02), BlinnPhongShading.getDiffuse(closestIntersection, light, 0.25)), BlinnPhongShading.getSpecular(closestIntersection, mainCamera.getPosition(), light, 0.75, 100)).getRed() * lightColors[colorIndex];
+                            }
+
+                            Color diffuse = new Color(ColorsHandler.clamp(objColors[0], 0, 1), ColorsHandler.clamp(objColors[1], 0, 1), ColorsHandler.clamp(objColors[2], 0, 1));
+                            pixelColor = ColorsHandler.addColor(pixelColor, diffuse);
+                        }
                     }
                 }
 
