@@ -1,2 +1,2 @@
-# Personal-Raytracer-v0.4
+# Personal-com.vr.raytracer.Raytracer-v0.8
 Multimedia &amp; Computer Graphics final project.

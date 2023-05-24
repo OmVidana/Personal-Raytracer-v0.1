@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5a46513-7fa2-4c27-bfe4-ab0e4bfaca25" name="Changes" comment="Raytracer v0.4 done">
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="b5a46513-7fa2-4c27-bfe4-ab0e4bfaca25" name="Changes" comment="Raytracer v0.7.5 done. Added Scale and Light Falloff">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/ParallelRT.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/Try.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Personal-Raytracer-v0.1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Personal-Raytracer-v0.2.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Raytracer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/vr/raytracer/objects/Camera.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/vr/raytracer/objects/Object3D.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/vr/raytracer/objects/Sphere.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/vr/raytracer/utils/Intersection.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/vr/raytracer/utils/Ray.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/vr/raytracer/utils/Scene.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/vr/raytracer/utils/Vector3D.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/Raytracer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/Raytracer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/renders/shadowBox1.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/renders/shadowBox1.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,8 +23,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -41,13 +39,16 @@
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
-        <option name="accountId" value="ac9bed46-3577-4b3c-b71e-29cf976f39b4" />
-        <option name="url" value="https://github.com/OmVidana/Personal-Raytracer-v0.1.git" />
+        <option name="accountId" value="09065c03-b21b-4ff8-9f44-508cec9ec993" />
+        <option name="url" value="https://github.com/OmVidana/Personal-Raytracer-v0.7.git" />
       </UrlAndAccount>
     </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="2NkOd0adWOZKNR5WE7J0hrNUIpD" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -57,26 +58,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/Omar VR/D2/UP_CG_Code_Session24_20230427_RT0.4/Session24_20230427_RT0.4/src/edu/up/isgc/cg/raytracer/Raytracer.java",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "terminal",
-    "two.files.diff.last.used.file": "D:/Omar VR/D2/UP_CG_Code_Session24_20230427_RT0.4/Session24_20230427_RT0.4/src/edu/up/isgc/cg/raytracer/Raytracer.java",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/ovidanar/Documentos/Personal-Raytracer-v0.7&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;,
+    &quot;settings.editor.splitter.proportion&quot;: &quot;0.27208835&quot;,
+    &quot;two.files.diff.last.used.file&quot;: &quot;D:/Omar VR/D2/UP_CG_Code_Session24_20230427_RT0.4/Session24_20230427_RT0.4/src/edu/up/isgc/cg/raytracer/Raytracer.java&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Omar VR\OneDrive\Escritorio\CLASES UP\SEMESTRE 4\MULTIMEDIOS Y GRÁFICAS COMPUTACIONALES\SharedFolderVM\Personal-Raytracer-v0.4\src\com\vro\personalraytracer\objs" />
       <recent name="D:\Omar VR\OneDrive\Escritorio\CLASES UP\SEMESTRE 4\MULTIMEDIOS Y GRÁFICAS COMPUTACIONALES\SharedFolderVM\Personal-Raytracer-v0.4" />
       <recent name="D:\Omar VR\OneDrive\Escritorio\CLASES UP\SEMESTRE 4\MULTIMEDIOS Y GRÁFICAS COMPUTACIONALES\SharedFolderVM\Personal-Raytracer-v0.1\src" />
     </key>
@@ -84,9 +88,11 @@
       <recent name="D:\Omar VR\OneDrive\Escritorio\CLASES UP\SEMESTRE 4\MULTIMEDIOS Y GRÁFICAS COMPUTACIONALES\SharedFolderVM\Personal-Raytracer-v0.1\src\renders" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.vr.raytracer" />
       <recent name="com.vr.raytracer.objects" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.vro.personalraytracer.objects" />
       <recent name="com.vr.raytracer.objects" />
       <recent name="com.vr.raytracer.utils" />
     </key>
@@ -142,6 +148,38 @@
       <workItem from="1682979104404" duration="130000" />
       <workItem from="1682979250349" duration="82000" />
       <workItem from="1682979372588" duration="6489000" />
+      <workItem from="1682986972877" duration="1843000" />
+      <workItem from="1683033196243" duration="15138000" />
+      <workItem from="1683219930806" duration="2170000" />
+      <workItem from="1683421242345" duration="551000" />
+      <workItem from="1683421934044" duration="614000" />
+      <workItem from="1683501281401" duration="5117000" />
+      <workItem from="1683510462979" duration="1046000" />
+      <workItem from="1683552235724" duration="4205000" />
+      <workItem from="1683560266275" duration="1809000" />
+      <workItem from="1683760684179" duration="3697000" />
+      <workItem from="1683767844682" duration="1336000" />
+      <workItem from="1683773376581" duration="4684000" />
+      <workItem from="1683778185250" duration="36000" />
+      <workItem from="1683824527759" duration="152000" />
+      <workItem from="1683824811477" duration="1826000" />
+      <workItem from="1683827033963" duration="1192000" />
+      <workItem from="1684005302390" duration="513000" />
+      <workItem from="1684175594708" duration="6953000" />
+      <workItem from="1684193197698" duration="2956000" />
+      <workItem from="1684260385760" duration="505000" />
+      <workItem from="1684260903746" duration="156000" />
+      <workItem from="1684261073831" duration="75000" />
+      <workItem from="1684431228865" duration="1404000" />
+      <workItem from="1684438038731" duration="89000" />
+      <workItem from="1684612280822" duration="30000" />
+      <workItem from="1684658429440" duration="26000" />
+      <workItem from="1684765338378" duration="4210000" />
+      <workItem from="1684831945437" duration="63000" />
+      <workItem from="1684848225322" duration="8689000" />
+      <workItem from="1684861845867" duration="2875000" />
+      <workItem from="1684864735783" duration="33266000" />
+      <workItem from="1684908324969" duration="1926000" />
     </task>
     <task id="LOCAL-00001" summary="Raytracer v0.1 done">
       <created>1681997840598</created>
@@ -150,7 +188,21 @@
       <option name="project" value="LOCAL" />
       <updated>1681997840598</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Raytracer v0.7 done. Added PointLight.&#10;Added version 0.5 and 0.6.">
+      <created>1683778060663</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1683778060663</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Raytracer v0.7.5 done. Added Scale and Light Falloff">
+      <created>1684903325333</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1684903325333</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -167,7 +219,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="main" />
+                        <option value="origin/Omar" />
                       </list>
                     </value>
                   </entry>
@@ -181,6 +233,12 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Raytracer v0.1 done" />
-    <option name="LAST_COMMIT_MESSAGE" value="Raytracer v0.1 done" />
+    <MESSAGE value="Raytracer v0.7 done. Added PointLight.&#10;Added version 0.5 and 0.6." />
+    <MESSAGE value="Raytracer v0.7.5 done. Added Scale and Light Falloff" />
+    <option name="LAST_COMMIT_MESSAGE" value="Raytracer v0.7.5 done. Added Scale and Light Falloff" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
