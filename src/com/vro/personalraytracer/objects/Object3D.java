@@ -1,5 +1,6 @@
 package com.vro.personalraytracer.objects;
 
+import com.vro.personalraytracer.materials.BlinnPhongShading;
 import com.vro.personalraytracer.tools.Vector3D;
 
 import java.awt.*;
@@ -13,6 +14,7 @@ public abstract class Object3D implements IsIntersectable {
     private Color color;
     private Vector3D position;
     private Vector3D scale;
+    private BlinnPhongShading material;
 
     /**
      * Instantiates a new Object3D.
@@ -91,6 +93,14 @@ public abstract class Object3D implements IsIntersectable {
      */
     public void setScale(Vector3D scale) {
         this.scale = scale;
+    }
+
+    public BlinnPhongShading getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(BlinnPhongShading material) {
+        this.material = material;
     }
 
     /**

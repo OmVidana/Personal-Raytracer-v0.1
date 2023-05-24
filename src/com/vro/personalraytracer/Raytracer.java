@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The type Raytracer.
@@ -95,7 +96,7 @@ public class Raytracer {
 
                         if (!insideShadow) {
                             for (int colorIndex = 0; colorIndex < objColors.length; colorIndex++) {
-                                objColors[colorIndex] *= lightFallOff * ColorsHandler.addColor(ColorsHandler.addColor(BlinnPhongShading.getAmbient(closestIntersection, 0.02), BlinnPhongShading.getDiffuse(closestIntersection, light, 0.25)), BlinnPhongShading.getSpecular(closestIntersection, mainCamera.getPosition(), light, 0.75, 100)).getRed() * lightColors[colorIndex];
+                                objColors[colorIndex] *= lightFallOff * ColorsHandler.addColor(ColorsHandler.addColor(closestIntersection.getObject().getMaterial().getAmbient(closestIntersection, 0.02), closestIntersection.getObject().getMaterial().getDiffuse(closestIntersection, light, 0.25)), closestIntersection.getObject().getMaterial().getSpecular(closestIntersection, mainCamera.getPosition(), light, 0.75, 100)).getRed() * lightColors[colorIndex];
                             }
 
                             Color diffuse = new Color(ColorsHandler.clamp(objColors[0], 0, 1), ColorsHandler.clamp(objColors[1], 0, 1), ColorsHandler.clamp(objColors[2], 0, 1));
@@ -109,38 +110,6 @@ public class Raytracer {
         }
 
         return image;
-    }
-
-    /**
-     * Clamp float.
-     *
-     * @param value the value
-     * @param min   the min
-     * @param max   the max
-     * @return the float
-     */
-    public static float clamp(double value, double min, double max) {
-        if (value < min) {
-            return (float) min;
-        }
-        if (value > max) {
-            return (float) max;
-        }
-        return (float) value;
-    }
-
-    /**
-     * Add color color.
-     *
-     * @param original   the original
-     * @param otherColor the other color
-     * @return the color
-     */
-    public static Color addColor(Color original, Color otherColor) {
-        float red = clamp((original.getRed() / 255.0) + (otherColor.getRed() / 255.0), 0, 1);
-        float green = clamp((original.getGreen() / 255.0) + (otherColor.getGreen() / 255.0), 0, 1);
-        float blue = clamp((original.getBlue() / 255.0) + (otherColor.getBlue() / 255.0), 0, 1);
-        return new Color(red, green, blue);
     }
 
     /**
@@ -182,34 +151,43 @@ public class Raytracer {
         Scene finalScene;
 
         Scene scene01 = new Scene();
-        scene01.setCamera(new Camera(new Vector3D(0, 0, -4), 300, 300, 90, 90, 0.6, 50.0));
-        scene01.addLight(new DirectionalLight(new Vector3D(0,1,0), new Vector3D(0, 1, 1), Color.WHITE, 20));
-        scene01.addLight(new PointLight(new Vector3D(0, 3, 0), Color.WHITE, 10));
-        scene01.addLight(new PointLight(new Vector3D(0, 3, 8), Color.WHITE, 15));
-        scene01.addObject(OBJReader.getModel3D("BowlingFloor.obj", new Vector3D(0,-2,0), new Vector3D(1,1,1), new Color(180,100,45)));
-        scene01.addObject(OBJReader.getModel3D("BowlingWall.obj", new Vector3D(0,-2,12.5), new Vector3D(1,1,1), new Color(11,1,74)));
-        scene01.addObject(OBJReader.getModel3D("BowlingBall.obj", new Vector3D(1.25,-2,2.5), new Vector3D(1,1,1), Color.WHITE));
-        scene01.addObject(OBJReader.getModel3D("BowlingPin.obj", new Vector3D(0,-3,10), new Vector3D(1,1,1), Color.WHITE));
-//        scene01.addObject(new Sphere(new Vector3D(-2,0,2),1, new Vector3D(2,1,1), Color.BLUE));
+        scene01.setCamera(new Camera(new Vector3D(0, 0, -4), 640, 360, 90, 60, 0.6, 50.0));
+//        scene01.addLight(new DirectionalLight(new Vector3D(0, 1, 0), new Vector3D(0, 1, 1), Color.WHITE, 1));
+        scene01.addLight(new PointLight(new Vector3D(4, 3, 7), Color.WHITE, 0.4));
+        scene01.addLight(new PointLight(new Vector3D(-4, 3, 7), Color.WHITE, 0.4));
+        scene01.addObject(OBJReader.getModel3D("BowlingFloor.obj", new Vector3D(0, -2, 0), new Vector3D(1, 1, 1), new Color(180, 100, 45)));
+        scene01.addObject(OBJReader.getModel3D("BowlingWall.obj", new Vector3D(0, -2, 12.5), new Vector3D(1, 1, 1), new Color(11, 1, 74)));
+        scene01.addObject(OBJReader.getModel3D("BowlingBall.obj", new Vector3D(1.25, -2, 2.5), new Vector3D(1, 1, 1), Color.WHITE));
+        scene01.addObject(OBJReader.getModel3D("BowlingPin.obj", new Vector3D(0, -3, 10), new Vector3D(1, 1, 1), Color.WHITE));
         Scene scene02 = new Scene();
         scene02.setCamera(new Camera(new Vector3D(0, 0, -4), 300, 300, 90, 90, 0.6, 50.0));
-//        scene02.addLight(new PointLight(new Vector3D(0, -10, 5.5), Color.WHITE, 20));
-        scene02.addLight(new PointLight(new Vector3D(0, -10, 5.5), Color.WHITE, 20));
-//        scene02.addLight(new DirectionalLight(new Vector3D(0, -10, 0), new Vector3D(0, -10, 5.5), Color.WHITE, 30));
-        scene02.addObject(OBJReader.getModel3D("Cube.obj", new Vector3D(0,-0.5,6), new Vector3D(1,1,1), Color.BLUE));
-        scene02.addObject(OBJReader.getModel3D("Floor.obj", new Vector3D(0,-1,6), new Vector3D(1.5,1.5,1.5), Color.YELLOW));
-        scene02.addObject(OBJReader.getModel3D("Container.obj", new Vector3D(0,-4,5), new Vector3D(1.5,1.5,1.5), Color.DARK_GRAY));
-        scene02.addObject(OBJReader.getModel3D("BowlingPin.obj", new Vector3D(0,-8,7), new Vector3D(1,1,1), Color.GREEN));
+        scene02.addLight(new PointLight(new Vector3D(-3, 3, 7), Color.WHITE, 0.9));
+//        scene02.addLight(new PointLight(new Vector3D(0, -8, 8), Color.WHITE, 0.9));
+        scene02.addLight(new DirectionalLight(new Vector3D(0, -10, 0), new Vector3D(0, -10, 8), Color.WHITE, 0.7));
+        scene02.addObject(OBJReader.getModel3D("BowlingBall.obj", new Vector3D(0, 0, 6.5), new Vector3D(0.5, 0.5, 0.5), Color.BLUE));
+        scene02.addObject(OBJReader.getModel3D("Floor.obj", new Vector3D(0, -1, 6), new Vector3D(1.5, 1.5, 1.5), Color.YELLOW));
+        scene02.addObject(OBJReader.getModel3D("Container.obj", new Vector3D(0, -4, 5), new Vector3D(1.5, 1.5, 1.5), Color.DARK_GRAY));
+        scene02.addObject(OBJReader.getModel3D("BowlingPin.obj", new Vector3D(0, -8, 7), new Vector3D(1, 1, 1), Color.GREEN));
 
         Scene scene03 = new Scene();
-        scene03.setCamera(new Camera(new Vector3D(0, 0, -4), 200, 200, 60, 60, 0.6, 50.0));
-        scene03.addLight(new PointLight(new Vector3D(0, 2, 3.5), Color.WHITE, 10));
-        scene03.addLight(new PointLight(new Vector3D(0, -1, 2), Color.WHITE, 10));
-        scene03.addObject(OBJReader.getModel3D("Floor.obj", new Vector3D(0,-2,5), new Vector3D(1.5,1.5,1.5), Color.YELLOW));
-        scene03.addObject(OBJReader.getModel3D("BowlingBall.obj", new Vector3D(0,-2,5), new Vector3D(0.5,0.5,0.5), Color.BLUE));
+        scene03.setCamera(new Camera(new Vector3D(0, 0, -4), 300, 300, 60, 60, 0.6, 50.0));
+//        scene03.addLight(new PointLight(new Vector3D(3, 2, 3.5), Color.WHITE, 0.4));
+//        scene03.addLight(new PointLight(new Vector3D(2, 2, 3), Color.WHITE, 0.1));
+        scene03.addLight(new PointLight(new Vector3D(0, 0, 1), Color.WHITE, 0.3));
 
+        Object3D bowlingFloor = OBJReader.getModel3D("Floor.obj", new Vector3D(0, -1, 4), new Vector3D(1.5, 1.5, 1.5), Color.YELLOW);
 
-        finalScene = scene01;
+        Objects.requireNonNull(bowlingFloor).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.12, 100, false));
+        scene03.addObject(bowlingFloor);
+
+        Object3D bowlingBall = OBJReader.getModel3D("BowlingBall.obj", new Vector3D(0, 0, 3), new Vector3D(0.75, 0.75, 0.75), Color.BLUE);
+        Objects.requireNonNull(bowlingBall).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.12, 100, true));
+        scene03.addObject(bowlingBall);
+
+        Object3D wall = OBJReader.getModel3D("VanDerWaal.obj", new Vector3D(0,0, 4), new Vector3D(2, 2, 2), Color.RED);
+        Objects.requireNonNull(wall).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.12, 100, true));
+        scene03.addObject(wall);
+        finalScene = scene03;
         return finalScene;
     }
 }

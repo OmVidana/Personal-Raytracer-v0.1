@@ -7,7 +7,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5a46513-7fa2-4c27-bfe4-ab0e4bfaca25" name="Changes" comment="Raytracer 0.9 Done. BlinnPhongShading Implemented." />
+    <list default="true" id="b5a46513-7fa2-4c27-bfe4-ab0e4bfaca25" name="Changes" comment="Raytracer 0.9 Done. BlinnPhongShading Implemented.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/ParallelRT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/ParallelRT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/Raytracer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/Raytracer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/materials/BlinnPhongShading.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/materials/BlinnPhongShading.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Model3D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Model3D.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Object3D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Object3D.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Sphere.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Sphere.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/lights/DirectionalLight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/lights/DirectionalLight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/lights/PointLight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/lights/PointLight.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -22,6 +32,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="0.9" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="UPDATE_TYPE" value="REBASE" />
   </component>
@@ -66,7 +81,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
     &quot;settings.editor.splitter.proportion&quot;: &quot;0.27208835&quot;,
     &quot;two.files.diff.last.used.file&quot;: &quot;D:/Omar VR/D2/UP_CG_Code_Session24_20230427_RT0.4/Session24_20230427_RT0.4/src/edu/up/isgc/cg/raytracer/Raytracer.java&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
@@ -174,6 +189,8 @@
       <workItem from="1684861845867" duration="2875000" />
       <workItem from="1684864735783" duration="33266000" />
       <workItem from="1684908324969" duration="1926000" />
+      <workItem from="1684920989839" duration="10369000" />
+      <workItem from="1684957796688" duration="9882000" />
     </task>
     <task id="LOCAL-00001" summary="Raytracer v0.1 done">
       <created>1681997840598</created>
