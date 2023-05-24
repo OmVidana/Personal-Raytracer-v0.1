@@ -33,7 +33,7 @@ public class Raytracer {
         Scene selectedScene = sceneManager();
 
         BufferedImage image = raytrace(selectedScene);
-        File outputImage = new File(renderPath + "shadowBox1.png");
+        File outputImage = new File(renderPath + "bowlingBlingPhong.png");
         try {
             ImageIO.write(image, "png", outputImage);
         } catch (Exception e) {
@@ -81,15 +81,28 @@ public class Raytracer {
                         double[] lightColors = new double[]{lightColor.getRed() / 255.0, lightColor.getGreen() / 255.0, lightColor.getBlue() / 255.0};
                         double[] objColors = new double[]{objColor.getRed() / 255.0, objColor.getGreen() / 255.0, objColor.getBlue() / 255.0};
 
-                        for (int colorIndex = 0; colorIndex < objColors.length; colorIndex++) {
-                            objColors[colorIndex] *= (intensity / Math.pow(lightDistance, 2)) * lightColors[colorIndex];
+                        for (Object3D object : objects) {
+                            if (!object.equals(closestIntersection.getObject())) {
+//                                Intersection shadowIntersection = object.getIntersection(new Ray(closestIntersection.getPosition(), Vector3D.normalize(Vector3D.vectorSubstraction(getPosition(), intersection.getPosition())));
+                                Ray shadowRay = new Ray(closestIntersection.getPosition(), Vector3D.normalize(Vector3D.vectorSubstraction(light.getPosition(), closestIntersection.getPosition())));
+                                Intersection shadowIntersection = object.getIntersection(shadowRay);
+                                if (shadowIntersection != null && shadowIntersection.getDistance() > 0 && shadowIntersection.getDistance() < closestIntersection.getDistance()) {
+                                    insideShadow = true;
+                                    break;
+                                }
+                            }
                         }
 
-                        Color diffuse = new Color(clamp(objColors[0], 0, 1), clamp(objColors[1], 0, 1), clamp(objColors[2], 0, 1));
-                        pixelColor = addColor(pixelColor, diffuse);
+                        if (!insideShadow) {
+                            for (int colorIndex = 0; colorIndex < objColors.length; colorIndex++) {
+                                objColors[colorIndex] *= (intensity / Math.pow(lightDistance, 2)) * lightColors[colorIndex];
+                            }
+
+                            Color diffuse = new Color(clamp(objColors[0], 0, 1), clamp(objColors[1], 0, 1), clamp(objColors[2], 0, 1));
+                            pixelColor = addColor(pixelColor, diffuse);
+                        }
                     }
                 }
-
                 image.setRGB(i, j, pixelColor.getRGB());
             }
         }
