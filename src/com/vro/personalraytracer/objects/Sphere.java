@@ -1,6 +1,5 @@
 package com.vro.personalraytracer.objects;
 
-import com.vro.personalraytracer.objects.Object3D;
 import com.vro.personalraytracer.tools.Intersection;
 import com.vro.personalraytracer.tools.Ray;
 import com.vro.personalraytracer.tools.Vector3D;
@@ -19,9 +18,9 @@ public class Sphere extends Object3D {
      * @param center the center
      * @param radius the radius
      */
-    public Sphere(Vector3D center, double radius) {
-        super(center, new Color(0, 0, 0));
-        setRadius(radius);
+    public Sphere(Vector3D center, double radius, Vector3D scale) {
+        super(center, scale, new Color(0, 0, 0));
+        setRadius(radius + (scale.getX() + scale.getY() + scale.getZ()) / 3);
     }
 
     /**
@@ -31,9 +30,9 @@ public class Sphere extends Object3D {
      * @param radius the radius
      * @param color  the color
      */
-    public Sphere(Vector3D center, double radius, Color color) {
-        super(center, color);
-        setRadius(radius);
+    public Sphere(Vector3D center, double radius, Vector3D scale, Color color) {
+        super(center, scale, color);
+        setRadius(radius + (scale.getX() + scale.getY() + scale.getZ()) / 3);
     }
 
     /**
@@ -45,9 +44,9 @@ public class Sphere extends Object3D {
      * @param green  the green
      * @param blue   the blue
      */
-    public Sphere(Vector3D center, double radius, int red, int green, int blue) {
-        super(center, new Color(red, green, blue));
-        setRadius(radius);
+    public Sphere(Vector3D center, double radius, Vector3D scale, int red, int green, int blue) {
+        super(center, scale, new Color(red, green, blue));
+        setRadius(radius + (scale.getX() + scale.getY() + scale.getZ()) / 3);
     }
 
     /**
@@ -59,9 +58,9 @@ public class Sphere extends Object3D {
      * @param radius the radius
      * @param color  the color
      */
-    public Sphere(double x, double y, double z, double radius, Color color) {
-        super(new Vector3D(x, y, z), color);
-        setRadius(radius);
+    public Sphere(double x, double y, double z, double radius, Vector3D scale, Color color) {
+        super(new Vector3D(x, y, z), scale, color);
+        setRadius(radius + (scale.getX() + scale.getY() + scale.getZ()) / 3);
     }
 
     /**
@@ -75,9 +74,9 @@ public class Sphere extends Object3D {
      * @param green  the green
      * @param blue   the blue
      */
-    public Sphere(double x, double y, double z, double radius, int red, int green, int blue) {
-        super(new Vector3D(x, y, z), new Color(red, green, blue));
-        setRadius(radius);
+    public Sphere(double x, double y, double z, double radius, Vector3D scale, int red, int green, int blue) {
+        super(new Vector3D(x, y, z), scale, new Color(red, green, blue));
+        setRadius(radius + (scale.getX() + scale.getY() + scale.getZ()) / 3);
     }
 
     @Override
@@ -120,4 +119,15 @@ public class Sphere extends Object3D {
         this.radius = radius;
     }
 
+    @Override
+    public void increaseSize(Vector3D scale) {
+        double length = (scale.getX() + scale.getY() + scale.getZ()) / 3;
+        setRadius(getRadius() + length);
+    }
+
+    @Override
+    public void decreaseSize(Vector3D scale) {
+        double length = (scale.getX() + scale.getY() + scale.getZ()) / 3;
+        setRadius(getRadius() - length);
+    }
 }
