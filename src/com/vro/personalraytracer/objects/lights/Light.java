@@ -54,6 +54,8 @@ public abstract class Light extends Object3D {
      */
     public abstract double getNDotL(Intersection intersection);
 
+//    public abstract Intersection getShadowIntersection(Intersection intersection);
+
     public Intersection getIntersection(Ray ray) {
         return new Intersection(new Vector3D(), -1, new Vector3D(), null);
     }

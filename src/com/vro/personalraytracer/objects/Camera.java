@@ -180,4 +180,14 @@ public class Camera extends Object3D {
     public void setNearFarPlanes(double[] nearFarPlanes) {
         this.nearFarPlanes = nearFarPlanes;
     }
+
+    @Override
+    public void increaseSize(Vector3D scale) {
+
+    }
+
+    @Override
+    public void decreaseSize(Vector3D scale) {
+
+    }
 }
