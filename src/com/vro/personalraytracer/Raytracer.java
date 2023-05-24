@@ -188,14 +188,14 @@ public class Raytracer {
         scene02.addObject(OBJReader.getModel3D("BowlingPin.obj", new Vector3D(0,-8,7), new Vector3D(1,1,1), Color.GREEN));
 
         Scene scene03 = new Scene();
-        scene03.setCamera(new Camera(new Vector3D(0, 0, -4), 200, 200, 90, 90, 0.6, 50.0));
-        scene03.addLight(new PointLight(new Vector3D(0, 2, 5), Color.WHITE, 10));
-        scene03.addLight(new PointLight(new Vector3D(0, 0, 2), Color.WHITE, 10));
-//        scene03.addObject(OBJReader.getModel3D("Floor.obj", new Vector3D(0,-2,5), new Vector3D(1.5,1.5,1.5), Color.YELLOW));
+        scene03.setCamera(new Camera(new Vector3D(0, 0, -4), 200, 200, 60, 60, 0.6, 50.0));
+        scene03.addLight(new PointLight(new Vector3D(0, 2, 3.5), Color.WHITE, 10));
+        scene03.addLight(new PointLight(new Vector3D(0, -1, 2), Color.WHITE, 10));
+        scene03.addObject(OBJReader.getModel3D("Floor.obj", new Vector3D(0,-2,5), new Vector3D(1.5,1.5,1.5), Color.YELLOW));
         scene03.addObject(OBJReader.getModel3D("BowlingBall.obj", new Vector3D(0,-2,5), new Vector3D(0.5,0.5,0.5), Color.BLUE));
 
 
-        finalScene = scene03;
+        finalScene = scene01;
         return finalScene;
     }
 }
