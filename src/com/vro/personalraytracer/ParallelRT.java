@@ -1,41 +1,38 @@
 package com.vro.personalraytracer;
 
-import com.vro.personalraytracer.objects.*;
+import com.vro.personalraytracer.objects.Camera;
+import com.vro.personalraytracer.objects.Object3D;
 import com.vro.personalraytracer.objects.lights.DirectionalLight;
 import com.vro.personalraytracer.objects.lights.Light;
 import com.vro.personalraytracer.objects.lights.PointLight;
 import com.vro.personalraytracer.tools.*;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
-/**
- * The type Raytracer.
- */
-public class Raytracer {
-    /**
-     * The constant renderPath.
-     */
+public class ParallelRT {
     public static final String renderPath = "src/com/vro/personalraytracer/renders/";
+    public static BufferedImage render;
 
-    /**
-     * The entry point of application.
-     *
-     * @param args the input arguments
-     */
     public static void main(String[] args) {
+
         System.out.println(new Date());
 
         Scene selectedScene = sceneManager();
+        render = new BufferedImage(selectedScene.getCamera().getWidth(), selectedScene.getCamera().getHeight(), BufferedImage.TYPE_INT_RGB);
 
-        BufferedImage image = raytrace(selectedScene);
+        parallelMethod(selectedScene);
+
         File outputImage = new File(renderPath + "shadowBox1.png");
         try {
-            ImageIO.write(image, "png", outputImage);
+            ImageIO.write(render, "png", outputImage);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -43,23 +40,40 @@ public class Raytracer {
         System.out.println(new Date());
     }
 
-    /**
-     * Raytrace buffered image.
-     *
-     * @param scene the scene
-     * @return the buffered image
-     */
-    public static BufferedImage raytrace(Scene scene) {
+    public static void parallelMethod(Scene scene) {
         Camera mainCamera = scene.getCamera();
         double[] nearFarPlanes = mainCamera.getNearFarPlanes();
-//        double cameraZ = mainCamera.getPosition().getZ();
-        BufferedImage image = new BufferedImage(mainCamera.getWidth(), mainCamera.getHeight(), BufferedImage.TYPE_INT_RGB);
-        java.util.List<Object3D> objects = scene.getObjects();
-        java.util.List<Light> lights = scene.getLights();
+        List<Object3D> objects = scene.getObjects();
+        List<Light> lights = scene.getLights();
 
         Vector3D[][] positionsToRaytrace = mainCamera.calculatePositionsToRay();
-        for (int i = 0; i < positionsToRaytrace.length; i++) {
-            for (int j = 0; j < positionsToRaytrace[i].length; j++) {
+
+        ExecutorService executorService = Executors.newFixedThreadPool(6);
+        for (int x = 0; x < render.getWidth(); x++) {
+            for (int y = 0; y < render.getHeight(); y++) {
+                Runnable runnable = raytrace(x, y, mainCamera, nearFarPlanes, objects, lights, positionsToRaytrace);
+                executorService.execute(runnable);
+            }
+        }
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(10, TimeUnit.MINUTES)) {
+                executorService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (!executorService.isTerminated()) {
+                System.err.println("Cancel non-finished");
+            }
+        }
+        executorService.shutdownNow();
+    }
+
+    public static Runnable raytrace(int i, int j, Camera mainCamera, double[] nearFarPlanes, List<Object3D> objects, List<Light> lights, Vector3D[][] positionsToRaytrace) {
+        return new Runnable() {
+            @Override
+            public void run() {
                 double x = positionsToRaytrace[i][j].getX() + mainCamera.getPosition().getX();
                 double y = positionsToRaytrace[i][j].getY() + mainCamera.getPosition().getY();
                 double z = positionsToRaytrace[i][j].getZ() + mainCamera.getPosition().getZ();
@@ -81,20 +95,36 @@ public class Raytracer {
                         double[] lightColors = new double[]{lightColor.getRed() / 255.0, lightColor.getGreen() / 255.0, lightColor.getBlue() / 255.0};
                         double[] objColors = new double[]{objColor.getRed() / 255.0, objColor.getGreen() / 255.0, objColor.getBlue() / 255.0};
 
-                        for (int colorIndex = 0; colorIndex < objColors.length; colorIndex++) {
-                            objColors[colorIndex] *= (intensity / Math.pow(lightDistance, 2)) * lightColors[colorIndex];
+                        for (Object3D object : objects) {
+                            if (!object.equals(closestIntersection.getObject())) {
+//                                Intersection shadowIntersection = object.getIntersection(new Ray(closestIntersection.getPosition(), Vector3D.normalize(Vector3D.vectorSubstraction(getPosition(), intersection.getPosition())));
+                                    Ray shadowRay = new Ray(closestIntersection.getPosition(), Vector3D.normalize(Vector3D.vectorSubstraction(light.getPosition(), closestIntersection.getPosition())));
+                                    Intersection shadowIntersection = object.getIntersection(shadowRay);
+                                if (shadowIntersection != null && shadowIntersection.getDistance() > 0 && shadowIntersection.getDistance() < closestIntersection.getDistance()) {
+                                    insideShadow = true;
+                                    break;
+                                }
+                            }
                         }
 
-                        Color diffuse = new Color(clamp(objColors[0], 0, 1), clamp(objColors[1], 0, 1), clamp(objColors[2], 0, 1));
-                        pixelColor = addColor(pixelColor, diffuse);
+                        if (!insideShadow) {
+                            for (int colorIndex = 0; colorIndex < objColors.length; colorIndex++) {
+                                objColors[colorIndex] *= (intensity / Math.pow(lightDistance, 2)) * lightColors[colorIndex];
+                            }
+
+                            Color diffuse = new Color(clamp(objColors[0], 0, 1), clamp(objColors[1], 0, 1), clamp(objColors[2], 0, 1));
+                            pixelColor = addColor(pixelColor, diffuse);
+                        }
                     }
                 }
 
-                image.setRGB(i, j, pixelColor.getRGB());
+                setRGB(i, j, pixelColor.getRGB());
             }
-        }
+        };
+    }
 
-        return image;
+    public static synchronized void setRGB(int x, int y, int pixelColor) {
+        render.setRGB(x, y, pixelColor);
     }
 
     /**
@@ -168,31 +198,30 @@ public class Raytracer {
         Scene finalScene;
 
         Scene scene01 = new Scene();
-        scene01.setCamera(new Camera(new Vector3D(0, 0, -4), 300, 300, 90, 90, 0.6, 50.0));
-        scene01.addLight(new DirectionalLight(new Vector3D(0,1,0), new Vector3D(0, 1, 1), Color.WHITE, 20));
-        scene01.addLight(new PointLight(new Vector3D(0, 3, 0), Color.WHITE, 10));
-        scene01.addLight(new PointLight(new Vector3D(0, 3, 8), Color.WHITE, 15));
-        scene01.addObject(OBJReader.getModel3D("BowlingFloor.obj", new Vector3D(0,-2,0), new Vector3D(1,1,1), new Color(180,100,45)));
-        scene01.addObject(OBJReader.getModel3D("BowlingWall.obj", new Vector3D(0,-2,12.5), new Vector3D(1,1,1), new Color(11,1,74)));
-        scene01.addObject(OBJReader.getModel3D("BowlingBall.obj", new Vector3D(1.25,-2,2.5), new Vector3D(1,1,1), Color.WHITE));
-        scene01.addObject(OBJReader.getModel3D("BowlingPin.obj", new Vector3D(0,-3,10), new Vector3D(1,1,1), Color.WHITE));
-//        scene01.addObject(new Sphere(new Vector3D(-2,0,2),1, new Vector3D(2,1,1), Color.BLUE));
+        scene01.setCamera(new Camera(new Vector3D(0, 0, -4), 640, 360, 90, 60, 0.6, 50.0));
+        scene01.addLight(new DirectionalLight(new Vector3D(0, 1, 0), new Vector3D(0, 1, 1), Color.WHITE, 2));
+        scene01.addLight(new PointLight(new Vector3D(0, 3, 0), Color.WHITE, 6));
+        scene01.addLight(new PointLight(new Vector3D(0, 3, 8), Color.WHITE, 6));
+        scene01.addObject(OBJReader.getModel3D("BowlingFloor.obj", new Vector3D(0, -2, 0), new Vector3D(1, 1, 1), new Color(180, 100, 45)));
+        scene01.addObject(OBJReader.getModel3D("BowlingWall.obj", new Vector3D(0, -2, 12.5), new Vector3D(1, 1, 1), new Color(11, 1, 74)));
+        scene01.addObject(OBJReader.getModel3D("BowlingBall.obj", new Vector3D(1.25, -2, 2.5), new Vector3D(1, 1, 1), Color.WHITE));
+        scene01.addObject(OBJReader.getModel3D("BowlingPin.obj", new Vector3D(0, -3, 10), new Vector3D(1, 1, 1), Color.WHITE));
         Scene scene02 = new Scene();
         scene02.setCamera(new Camera(new Vector3D(0, 0, -4), 300, 300, 90, 90, 0.6, 50.0));
 //        scene02.addLight(new PointLight(new Vector3D(0, -10, 5.5), Color.WHITE, 20));
         scene02.addLight(new PointLight(new Vector3D(0, -10, 5.5), Color.WHITE, 20));
 //        scene02.addLight(new DirectionalLight(new Vector3D(0, -10, 0), new Vector3D(0, -10, 5.5), Color.WHITE, 30));
-        scene02.addObject(OBJReader.getModel3D("Cube.obj", new Vector3D(0,-0.5,6), new Vector3D(1,1,1), Color.BLUE));
-        scene02.addObject(OBJReader.getModel3D("Floor.obj", new Vector3D(0,-1,6), new Vector3D(1.5,1.5,1.5), Color.YELLOW));
-        scene02.addObject(OBJReader.getModel3D("Container.obj", new Vector3D(0,-4,5), new Vector3D(1.5,1.5,1.5), Color.DARK_GRAY));
-        scene02.addObject(OBJReader.getModel3D("BowlingPin.obj", new Vector3D(0,-8,7), new Vector3D(1,1,1), Color.GREEN));
+        scene02.addObject(OBJReader.getModel3D("Cube.obj", new Vector3D(0, -0.5, 6), new Vector3D(1, 1, 1), Color.BLUE));
+        scene02.addObject(OBJReader.getModel3D("Floor.obj", new Vector3D(0, -1, 6), new Vector3D(1.5, 1.5, 1.5), Color.YELLOW));
+        scene02.addObject(OBJReader.getModel3D("Container.obj", new Vector3D(0, -4, 5), new Vector3D(1.5, 1.5, 1.5), Color.DARK_GRAY));
+        scene02.addObject(OBJReader.getModel3D("BowlingPin.obj", new Vector3D(0, -8, 7), new Vector3D(1, 1, 1), Color.GREEN));
 
         Scene scene03 = new Scene();
-        scene03.setCamera(new Camera(new Vector3D(0, 0, -4), 200, 200, 60, 60, 0.6, 50.0));
+        scene03.setCamera(new Camera(new Vector3D(0, 0, -4), 400, 400, 60, 60, 0.6, 50.0));
         scene03.addLight(new PointLight(new Vector3D(0, 2, 3.5), Color.WHITE, 10));
         scene03.addLight(new PointLight(new Vector3D(0, -1, 2), Color.WHITE, 10));
-        scene03.addObject(OBJReader.getModel3D("Floor.obj", new Vector3D(0,-2,5), new Vector3D(1.5,1.5,1.5), Color.YELLOW));
-        scene03.addObject(OBJReader.getModel3D("BowlingBall.obj", new Vector3D(0,-2,5), new Vector3D(0.5,0.5,0.5), Color.BLUE));
+        scene03.addObject(OBJReader.getModel3D("Floor.obj", new Vector3D(0, -2, 5), new Vector3D(1.5, 1.5, 1.5), Color.YELLOW));
+        scene03.addObject(OBJReader.getModel3D("BowlingBall.obj", new Vector3D(0, -2, 5), new Vector3D(0.5, 0.5, 0.5), Color.BLUE));
 
 
         finalScene = scene01;

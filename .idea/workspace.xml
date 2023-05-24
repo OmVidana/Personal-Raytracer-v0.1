@@ -7,17 +7,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5a46513-7fa2-4c27-bfe4-ab0e4bfaca25" name="Changes" comment="Raytracer v0.7 done. Added PointLight.&#10;Added version 0.5 and 0.6.">
+    <list default="true" id="b5a46513-7fa2-4c27-bfe4-ab0e4bfaca25" name="Changes" comment="Raytracer v0.7.5 done. Added Scale and Light Falloff">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/ParallelRT.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/Try.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/Raytracer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/Raytracer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Camera.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Model3D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Model3D.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Object3D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Object3D.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Sphere.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Sphere.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/lights/DirectionalLight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/lights/DirectionalLight.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/lights/Light.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/lights/Light.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/lights/PointLight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/lights/PointLight.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/tools/OBJReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/tools/OBJReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/renders/shadowBox1.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/renders/shadowBox1.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,8 +39,8 @@
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
-        <option name="accountId" value="ac9bed46-3577-4b3c-b71e-29cf976f39b4" />
-        <option name="url" value="https://github.com/OmVidana/Personal-Raytracer-v0.4.git" />
+        <option name="accountId" value="09065c03-b21b-4ff8-9f44-508cec9ec993" />
+        <option name="url" value="https://github.com/OmVidana/Personal-Raytracer-v0.7.git" />
       </UrlAndAccount>
     </option>
   </component>
@@ -66,6 +62,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/ovidanar/Documentos/Personal-Raytracer-v0.7&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -181,7 +178,8 @@
       <workItem from="1684831945437" duration="63000" />
       <workItem from="1684848225322" duration="8689000" />
       <workItem from="1684861845867" duration="2875000" />
-      <workItem from="1684864735783" duration="28274000" />
+      <workItem from="1684864735783" duration="33266000" />
+      <workItem from="1684908324969" duration="1926000" />
     </task>
     <task id="LOCAL-00001" summary="Raytracer v0.1 done">
       <created>1681997840598</created>
@@ -197,7 +195,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683778060663</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Raytracer v0.7.5 done. Added Scale and Light Falloff">
+      <created>1684903325333</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1684903325333</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -229,7 +234,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Raytracer v0.1 done" />
     <MESSAGE value="Raytracer v0.7 done. Added PointLight.&#10;Added version 0.5 and 0.6." />
-    <option name="LAST_COMMIT_MESSAGE" value="Raytracer v0.7 done. Added PointLight.&#10;Added version 0.5 and 0.6." />
+    <MESSAGE value="Raytracer v0.7.5 done. Added Scale and Light Falloff" />
+    <option name="LAST_COMMIT_MESSAGE" value="Raytracer v0.7.5 done. Added Scale and Light Falloff" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
