@@ -7,14 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5a46513-7fa2-4c27-bfe4-ab0e4bfaca25" name="Changes" comment="Raytracer v0.7.5 done. Added Scale and Light Falloff">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/ParallelRT.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/Try.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/Raytracer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/Raytracer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/renders/shadowBox1.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/renders/shadowBox1.png" afterDir="false" />
-    </list>
+    <list default="true" id="b5a46513-7fa2-4c27-bfe4-ab0e4bfaca25" name="Changes" comment="Raytracer 0.9 Done. BlinnPhongShading Implemented." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,6 +23,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -202,7 +196,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684903325333</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Raytracer 0.9 Done. BlinnPhongShading Implemented.">
+      <created>1684920510067</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1684920510067</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -235,7 +236,8 @@
     <MESSAGE value="Raytracer v0.1 done" />
     <MESSAGE value="Raytracer v0.7 done. Added PointLight.&#10;Added version 0.5 and 0.6." />
     <MESSAGE value="Raytracer v0.7.5 done. Added Scale and Light Falloff" />
-    <option name="LAST_COMMIT_MESSAGE" value="Raytracer v0.7.5 done. Added Scale and Light Falloff" />
+    <MESSAGE value="Raytracer 0.9 Done. BlinnPhongShading Implemented." />
+    <option name="LAST_COMMIT_MESSAGE" value="Raytracer 0.9 Done. BlinnPhongShading Implemented." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
