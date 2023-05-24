@@ -1,10 +1,8 @@
 package com.vro.personalraytracer.materials;
 
-import com.vro.personalraytracer.objects.Object3D;
 import com.vro.personalraytracer.objects.lights.Light;
 import com.vro.personalraytracer.tools.ColorsHandler;
 import com.vro.personalraytracer.tools.Intersection;
-import com.vro.personalraytracer.tools.Ray;
 import com.vro.personalraytracer.tools.Vector3D;
 
 import java.awt.*;
@@ -86,11 +84,20 @@ public class BlinnPhongShading {
         Vector3D N = intersection.getNormal();
         Vector3D P = intersection.getPosition();
         Vector3D L = Vector3D.normalize(Vector3D.vectorSubstraction(light.getPosition(), intersection.getPosition()));
-        Vector3D V = Vector3D.normalize(Vector3D.vectorSubstraction(cameraPos, P));
+        Vector3D V = Vector3D.normalize(Vector3D.vectorSubstraction(P, cameraPos));
         Vector3D H = Vector3D.normalize(Vector3D.vectorAddition(V,L));
         Color specularColor = ColorsHandler.multiply(intersection.getObject().getColor(), scalar);
         double shininess = Math.pow(Vector3D.dotProduct(N, H), exponent);
         return ColorsHandler.multiply(ColorsHandler.multiply(specularColor, light.getColor()), shininess);
+    }
+
+    public static Vector3D directionReflection(Intersection intersection, Vector3D cameraPos, Light light) {
+        Vector3D N = intersection.getNormal();
+        Vector3D P = intersection.getPosition();
+        Vector3D L = Vector3D.normalize(Vector3D.vectorSubstraction(light.getPosition(), intersection.getPosition()));
+        Vector3D V = Vector3D.normalize(Vector3D.vectorSubstraction(P, cameraPos));
+        Vector3D H = Vector3D.normalize(Vector3D.vectorAddition(V,L));
+        return Vector3D.vectorAddition(Vector3D.scalarMultiplication(Vector3D.scalarMultiplication(N, Vector3D.dotProduct(V,N)), -2), V);
     }
 
 //    public Color getRefraction() {

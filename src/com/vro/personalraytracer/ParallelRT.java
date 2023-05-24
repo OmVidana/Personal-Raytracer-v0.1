@@ -47,7 +47,7 @@ public class ParallelRT {
 
         parallelMethod(selectedScene);
 
-        File outputImage = new File(renderPath + "testblinnPhongReflection.png");
+        File outputImage = new File(renderPath + "testblinnPhongReflection2.png");
         try {
             ImageIO.write(render, "png", outputImage);
         } catch (Exception e) {
@@ -136,18 +136,6 @@ public class ParallelRT {
                         double[] lightColors = new double[]{lightColor.getRed() / 255.0, lightColor.getGreen() / 255.0, lightColor.getBlue() / 255.0};
                         double[] objColors = new double[]{objColor.getRed() / 255.0, objColor.getGreen() / 255.0, objColor.getBlue() / 255.0};
 
-                        // Reflection
-                        if (depthRecursive > 0 && closestIntersection.getObject().getMaterial().isReflective()) {
-                            Vector3D reflectDirection = Vector3D.normalize(Vector3D.vectorSubstraction(ray.getDirection(), closestIntersection.getPosition()));
-                            Ray reflectionRay = new Ray(closestIntersection.getPosition(), reflectDirection);
-                            Intersection reflectionIntersection = raycast(reflectionRay, objects, closestIntersection.getObject(), nearFarPlanes);
-
-                            if (reflectionIntersection != null) {
-                                Color reflection = traceRay(depthRecursive - 1);
-                                pixelColor = ColorsHandler.addColor(pixelColor, reflection);
-                            }
-                        }
-
                         for (Object3D object : objects) {
                             if (!object.equals(closestIntersection.getObject())) {
                                 Ray shadowRay = new Ray(closestIntersection.getPosition(), Vector3D.normalize(Vector3D.vectorSubstraction(light.getPosition(), closestIntersection.getPosition())));
@@ -166,6 +154,18 @@ public class ParallelRT {
 
                             Color diffuse = new Color(ColorsHandler.clamp(objColors[0], 0, 1), ColorsHandler.clamp(objColors[1], 0, 1), ColorsHandler.clamp(objColors[2], 0, 1));
                             pixelColor = ColorsHandler.addColor(pixelColor, diffuse);
+                        }
+
+                        // Reflection
+                        if (depthRecursive > 0 && closestIntersection.getObject().getMaterial().isReflective()) {
+                            Vector3D reflectDirection = BlinnPhongShading.directionReflection(closestIntersection, mainCamera.getPosition(), light);
+                            Ray reflectionRay = new Ray(closestIntersection.getPosition(), reflectDirection);
+                            Intersection reflectionIntersection = raycast(reflectionRay, objects, closestIntersection.getObject(), nearFarPlanes);
+
+                            if (reflectionIntersection != null) {
+                                Color reflection = traceRay(depthRecursive - 1);
+                                pixelColor = ColorsHandler.addColor(pixelColor, reflection);
+                            }
                         }
                     }
                 }
@@ -265,12 +265,12 @@ public class ParallelRT {
 
         scene02.addLight(new DirectionalLight(new Vector3D(), new Vector3D(0,0,1), Color.WHITE, 0.2));
 
-        Sphere sphere1 = new Sphere(new Vector3D(3,0,5),2, Color.CYAN);
-        sphere1.setMaterial(new BlinnPhongShading(0.10, 0.15, 0.34, 200, true));
+        Sphere sphere1 = new Sphere(new Vector3D(3,0,4),2, Color.CYAN);
+        sphere1.setMaterial(new BlinnPhongShading(0.10, 0.15, 0.34, 100, true));
         scene02.addObject(sphere1);
 
         Sphere sphere2 = new Sphere(new Vector3D(-3,0,4), 2, Color.RED);
-        sphere2.setMaterial(new BlinnPhongShading(0.15, 0.15, 0.4, 200, true));
+        sphere2.setMaterial(new BlinnPhongShading(0.15, 0.15, 0.4, 100, true));
         scene02.addObject(sphere2);
 
         finalScene = scene02;
