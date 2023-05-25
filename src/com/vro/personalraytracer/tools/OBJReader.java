@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ *
+ * @author Jafet Rodríguez - use permission for Omar Vidaña Rodríguez.
  * The type Obj reader.
  */
 public abstract class OBJReader {
@@ -23,7 +25,7 @@ public abstract class OBJReader {
     public static final String objFolder = "src/com/vro/personalraytracer/objs/";
 
     /**
-     * Gets model 3 d.
+     * Gets Model3D from .Obj.
      *
      * @param path   the path
      * @param origin the origin
@@ -169,7 +171,7 @@ public abstract class OBJReader {
                     triangle.setNormals(triangleNormals[0], triangleNormals[1], triangleNormals[2]);
                 }
             }
-            return new Model3D(origin, scale, triangles.toArray(new Triangle[triangles.size()]), color);
+            return new Model3D(origin, scale, triangles.toArray(new Triangle[triangles.size()]), color, false, 0, false, 0);
         } catch (FileNotFoundException ex) {
             System.err.println("File not found");
         } catch (IOException ex) {

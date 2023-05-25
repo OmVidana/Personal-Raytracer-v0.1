@@ -1,7 +1,7 @@
 package com.vro.personalraytracer.tools;
 
 /**
- * The type Vector 3 d.
+ * Vector3D class. Gives you room to use Vectors in a 3D spacio and operate them.
  */
 public class Vector3D {
     private double x;
@@ -10,14 +10,14 @@ public class Vector3D {
     private double magnitude;
 
     /**
-     * Instantiates a new Vector 3 d.
+     * Instantiates a new Vector3D.
      */
     public Vector3D() {
         setVector3D(0.0, 0.0, 0.0);
     }
 
     /**
-     * Instantiates a new Vector 3 d.
+     * Instantiates a new Vector3D.
      *
      * @param x the x
      * @param y the y
@@ -28,7 +28,7 @@ public class Vector3D {
     }
 
     /**
-     * Instantiates a new Vector 3 d.
+     * Instantiates a new Vector3D.
      *
      * @param vector the vector
      */
@@ -37,7 +37,7 @@ public class Vector3D {
     }
 
     /**
-     * Sets vector 3 d.
+     * Sets Vector3D.
      *
      * @param x the x
      * @param y the y
@@ -51,7 +51,7 @@ public class Vector3D {
     }
 
     /**
-     * Sets vector 3 d.
+     * Sets Vector3D.
      *
      * @param vector the vector
      */
@@ -147,11 +147,11 @@ public class Vector3D {
     }
 
     /**
-     * Cross product vector 3 d.
+     * Cross product Vector3D.
      *
      * @param v1 the v 1
      * @param v2 the v 2
-     * @return the vector 3 d
+     * @return the Vector3D
      */
     public static Vector3D crossProduct(Vector3D v1, Vector3D v2) {
         return new Vector3D(
@@ -162,11 +162,11 @@ public class Vector3D {
     }
 
     /**
-     * Vector addition vector 3 d.
+     * Vector addition Vector3D.
      *
      * @param v1 the v 1
      * @param v2 the v 2
-     * @return the vector 3 d
+     * @return the Vector3D
      */
     public static Vector3D vectorAddition(Vector3D v1, Vector3D v2) {
         return new Vector3D(v1.getX() + v2.getX(), v1.getY() + v2.getY(), v1.getZ() + v2.getZ());
@@ -184,11 +184,11 @@ public class Vector3D {
     }
 
     /**
-     * Vector substraction vector 3 d.
+     * Vector substraction Vector3D.
      *
      * @param v1 the v 1
      * @param v2 the v 2
-     * @return the vector 3 d
+     * @return the Vector3D
      */
     public static Vector3D vectorSubstraction(Vector3D v1, Vector3D v2) {
         return new Vector3D(v1.getX() - v2.getX(), v1.getY() - v2.getY(), v1.getZ() - v2.getZ());
@@ -206,11 +206,11 @@ public class Vector3D {
     }
 
     /**
-     * Scalar multiplication vector 3 d.
+     * Scalar multiplication Vector3D.
      *
      * @param v1     the v 1
      * @param scalar the scalar
-     * @return the vector 3 d
+     * @return the Vector3D
      */
     public static Vector3D scalarMultiplication(Vector3D v1, double scalar) {
         return new Vector3D(v1.getX() * scalar, v1.getY() * scalar, v1.getZ() * scalar);
@@ -228,10 +228,10 @@ public class Vector3D {
     }
 
     /**
-     * Normalize vector 3 d.
+     * Normalize Vector3D.
      *
      * @param v1 the v 1
-     * @return the vector 3 d
+     * @return the Vector3D
      */
     public static Vector3D normalize(Vector3D v1) {
         double mag = v1.getMagnitude();

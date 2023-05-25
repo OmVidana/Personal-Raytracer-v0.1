@@ -47,7 +47,7 @@ public class ParallelRT {
 
         parallelMethod(selectedScene);
 
-        File outputImage = new File(renderPath + "OmarVidaña_Render.png");
+        File outputImage = new File(renderPath + "OmarVidaña_Render2.png");
         try {
             ImageIO.write(render, "png", outputImage);
         } catch (Exception e) {
@@ -163,16 +163,23 @@ public class ParallelRT {
                             pixelColor = ColorsHandler.addColor(pixelColor, diffuse);
                         }
 
-                        // Reflection
-                        if (depthRecursive > 0 && closestIntersection.getObject().getMaterial().isReflective()) {
-                            Vector3D reflectDirection = BlinnPhongShading.directionReflection(N, V);
-                            Ray reflectionRay = new Ray(closestIntersection.getPosition(), Vector3D.vectorAddition(reflectDirection, Vector3D.scalarMultiplication(reflectDirection,0.001)));
+                        // Reflection and Refraction
+                        if (depthRecursive > 0 && (closestIntersection.getObject().isReflective() || closestIntersection.getObject().isRefractive())) {
+                            //Reflection
+                            Vector3D reflectDirection = Vector3D.vectorAddition(Vector3D.scalarMultiplication(Vector3D.scalarMultiplication(N, Vector3D.dotProduct(V,N)), -2), V);
+                            Ray reflectionRay = new Ray(P, Vector3D.vectorAddition(reflectDirection, Vector3D.scalarMultiplication(reflectDirection,0.001)));
                             Intersection reflectionIntersection = raycast(reflectionRay, objects, closestIntersection.getObject(), nearFarPlanes);
 
+                            //Reflection
                             if (reflectionIntersection != null) {
                                 Color reflection = traceRay(depthRecursive - 1);
-                                pixelColor = ColorsHandler.addColor(pixelColor, reflection);
+                                pixelColor = ColorsHandler.addColor(pixelColor, ColorsHandler.multiply(reflection, closestIntersection.getObject().getReflectiveK()));
                             }
+                            //Refraction
+//                            if (refractionIntersection != null) {
+//                                Color refraction = traceRay(depthRecursive - 1);
+//                                pixelColor = ColorsHandler.addColor(pixelColor, ColorsHandler.multiply(refraction, (closestIntersection.getObject().getRefractiveK())));
+//                            }
                         }
                     }
                 }
@@ -231,68 +238,144 @@ public class ParallelRT {
         Scene finalScene;
 
         Scene scene01 = new Scene();
-        scene01.setCamera(new Camera(new Vector3D(0, 0, -4), 160, 90, 90, 60, 0.6, 50.0));
+        scene01.setCamera(new Camera(new Vector3D(0, 0, -4), 198, 108, 90, 60, 0.5, 20.0));
 
-        scene01.addLight(new PointLight(new Vector3D(0, 4, 9), Color.WHITE, 0.3));
-        scene01.addLight(new PointLight(new Vector3D(4, 4, 6), Color.WHITE, 0.3));
-        scene01.addLight(new PointLight(new Vector3D(-4, 4, 6), Color.WHITE, 0.3));
-        scene01.addLight(new PointLight(new Vector3D(0, 4, 3), Color.WHITE, 0.3));
+        scene01.addLight(new PointLight(new Vector3D(-6,4,0), new Color(80, 90, 127), 0.55));
+        scene01.addLight(new PointLight(new Vector3D(6,3,0), new Color(80, 90, 127), 0.6));
 
-        Object3D bowlingFloor = OBJReader.getModel3D("BowlingFloor.obj", new Vector3D(0, -0.5, 1), new Vector3D(1, 1, 1), new Color(180, 100, 45));
-        Objects.requireNonNull(bowlingFloor).setMaterial(new BlinnPhongShading(0.10, 0.03, 0.30, 60, true, false));
-        scene01.addObject(bowlingFloor);
+        Object3D momCow = OBJReader.getModel3D("CowY90.obj", new Vector3D(-1, -2, 1), new Vector3D(1, 1, 1), new Color(30, 23, 9));
+        Objects.requireNonNull(momCow).setMaterial(new BlinnPhongShading(0.20, 0.1, 0.24, 45));
+        momCow.setReflective(false);
+        momCow.setReflectiveK(0);
+        scene01.addObject(momCow);
 
-        Object3D bowlingWall = OBJReader.getModel3D("BowlingWall.obj", new Vector3D(0, -2, 12.5), new Vector3D(1, 1, 1), new Color(11, 1, 74));
-        Objects.requireNonNull(bowlingWall).setMaterial(new BlinnPhongShading(0.20, 0.08, 0.22, 45, false, false));
-        scene01.addObject(bowlingWall);
+        Object3D babyCow = OBJReader.getModel3D("CowY90.obj", new Vector3D(5, -2, 2.5), new Vector3D(0.5, 0.5, 0.5), new Color(180, 160, 140));
+        Objects.requireNonNull(babyCow).setMaterial(new BlinnPhongShading(0.20, 0.15, 0.24, 90));
+        momCow.setReflective(false);
+        momCow.setReflectiveK(0);
+        scene01.addObject(babyCow);
 
-        Object3D bowlingBall = OBJReader.getModel3D("BowlingBall.obj", new Vector3D(1.25, 0, 2.5), new Vector3D(1, 1, 1), Color.WHITE);
-        Objects.requireNonNull(bowlingBall).setMaterial(new BlinnPhongShading(0.3, 0.15, 0.36, 45, false, false));
-        scene01.addObject(bowlingBall);
+        Object3D floor = OBJReader.getModel3D("Floor.obj", new Vector3D(0, -2, 3.5), new Vector3D(30, 1, 30), new Color(0, 45, 2));
+        Objects.requireNonNull(floor).setMaterial(new BlinnPhongShading(0.19, 0.11, 0.25, 80));
+        momCow.setReflective(false);
+        momCow.setReflectiveK(0);
+        scene01.addObject(floor);
 
-        Object3D bowlingPin = OBJReader.getModel3D("BowlingPin.obj", new Vector3D(0, -3, 10), new Vector3D(1, 1, 1), Color.WHITE);
-        Objects.requireNonNull(bowlingPin).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.12, 45, true, false));
-        scene01.addObject(bowlingPin);
+        Object3D sky = OBJReader.getModel3D("Wall.obj", new Vector3D(0, -2, 9), new Vector3D(25, 25, 1), new Color(2, 12, 79));
+        Objects.requireNonNull(sky).setMaterial(new BlinnPhongShading(0.19, 0.11, 0.21, 80));
+        sky.setReflective(false);
+        sky.setReflectiveK(0);
+        scene01.addObject(sky);
 
-        Object3D bowlingPinDecoration = OBJReader.getModel3D("BowlingPin.obj", new Vector3D(-10, -1, 10), new Vector3D(2, 2, 2), Color.WHITE);
-        Objects.requireNonNull(bowlingPinDecoration).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.24, 45, true, false));
-        scene01.addObject(bowlingPinDecoration);
+        Object3D hay = OBJReader.getModel3D("HayBaleY45.obj", new Vector3D(-8, -4, 1), new Vector3D(1, 1, 1), new Color(154, 131, 14));
+        Objects.requireNonNull(hay).setMaterial(new BlinnPhongShading(0.19, 0.11, 0.15, 60));
+        hay.setReflective(false);
+        hay.setReflectiveK(0);
+        scene01.addObject(hay);
 
-        Object3D bowlingPinDecoration2 = OBJReader.getModel3D("BowlingPin.obj", new Vector3D(10, -1, 10), new Vector3D(2, 2, 2), Color.WHITE);
-        Objects.requireNonNull(bowlingPinDecoration2).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.24, 60, true, false));
-        scene01.addObject(bowlingPinDecoration2);
+        Object3D hay2 = OBJReader.getModel3D("HayBaleY45.obj", new Vector3D(10.5, -2, 5.5), new Vector3D(0.9, 0.6, 0.8), new Color(154, 131, 14));
+        Objects.requireNonNull(hay2).setMaterial(new BlinnPhongShading(0.22, 0.17, 0.29, 60));
+        hay2.setReflective(false);
+        hay2.setReflectiveK(0);
+        scene01.addObject(hay2);
 
-        Object3D bowlingCeiling = OBJReader.getModel3D("Ceiling.obj", new Vector3D(0, 8, 12), new Vector3D(12, 1, 12), Color.RED);
-        Objects.requireNonNull(bowlingCeiling).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.24, 45, false, false));
-        scene01.addObject(bowlingCeiling);
+        Object3D hay3 = OBJReader.getModel3D("HayBale.obj", new Vector3D(-8, -2, 7), new Vector3D(1, 1, 1), new Color(154, 131, 14));
+        Objects.requireNonNull(hay3).setMaterial(new BlinnPhongShading(0.25, 0.14, 0.2, 60));
+        hay3.setReflective(false);
+        hay3.setReflectiveK(0);
+        scene01.addObject(hay3);
+
+        Object3D hay4 = OBJReader.getModel3D("HayBale.obj", new Vector3D(8, -2, 7), new Vector3D(1, 1, 1), new Color(154, 131, 14));
+        Objects.requireNonNull(hay4).setMaterial(new BlinnPhongShading(0.19, 0.14, 0.21, 60));
+        hay4.setReflective(false);
+        hay4.setReflectiveK(0);
+        scene01.addObject(hay4);
 
         Scene scene02 = new Scene();
-        scene02.setCamera(new Camera(new Vector3D(0, 0, -4), 370, 180, 90, 60, 0.5, 20.0));
 
-        scene02.addLight(new PointLight(new Vector3D(0, 3, -2), Color.WHITE, 0.4));
-        scene02.addLight(new PointLight(new Vector3D(0, 3, 16), Color.WHITE, 0.4));
+        scene02.setCamera(new Camera(new Vector3D(0, 0, -4), 198, 108, 90, 60, 0.5, 20.0));
 
-        Object3D momCow = OBJReader.getModel3D("Cow.obj", new Vector3D(0, -1, 5), new Vector3D(1, 1, 1), new Color(30, 23, 9));
-        Objects.requireNonNull(momCow).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.24, 45, false, false));
-        scene02.addObject(momCow);
+        scene02.addLight(new PointLight(new Vector3D(6,4.5,1), new Color(80, 90, 127), 0.55));
+        scene02.addLight(new PointLight(new Vector3D(0,4,1), new Color(80, 90, 127), 0.55));
+        scene02.addLight(new PointLight(new Vector3D(-6,4.5,1), new Color(80, 90, 127), 0.55));
+        scene02.addLight(new PointLight(new Vector3D(0, 3, 8), new Color(80, 90, 127), 0.25));
 
-        Object3D babyCow = OBJReader.getModel3D("Cow.obj", new Vector3D(2, -1, 5), new Vector3D(0.5, 0.5, 0.5), new Color(180, 160, 140));
-        Objects.requireNonNull(babyCow).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.24, 45, false, false));
-        scene02.addObject(babyCow);
 
-//        Object3D ufo = OBJReader.getModel3D("Ufo.obj", new Vector3D(0, 2, 1), new Vector3D(1, 1, 1), Color.LIGHT_GRAY);
-//        Objects.requireNonNull(babyCow).setMaterial(new BlinnPhongShading(0.24, 0.07, 0.13, 55, true, false));
-//        scene02.addObject(ufo);
+        Object3D floor2 = OBJReader.getModel3D("Floor.obj", new Vector3D(0, -2, 3.5), new Vector3D(30, 1, 30), new Color(0, 45, 2));
+        Objects.requireNonNull(floor2).setMaterial(new BlinnPhongShading(0.19, 0.11, 0.25, 80));
+        floor2.setReflective(false);
+        floor2.setReflectiveK(0);
+        scene02.addObject(floor2);
 
-        Object3D floor = OBJReader.getModel3D("Floor.obj", new Vector3D(0, -2, 5), new Vector3D(15, 1, 15), new Color(0, 45, 2));
-        Objects.requireNonNull(bowlingFloor).setMaterial(new BlinnPhongShading(0.19, 0.11, 0.15, 60, false, false));
-        scene02.addObject(bowlingFloor);
+        Object3D sky2 = OBJReader.getModel3D("Wall.obj", new Vector3D(0, -2, 9), new Vector3D(25, 25, 1), new Color(2, 12, 79));
+        Objects.requireNonNull(sky2).setMaterial(new BlinnPhongShading(0.19, 0.11, 0.21, 80));
+        sky2.setReflective(false);
+        sky2.setReflectiveK(0);
+        scene01.addObject(sky2);
 
-        Object3D hay = OBJReader.getModel3D("HayBale.obj", new Vector3D(-3, -1, 5), new Vector3D(1, 1, 1), new Color(154, 131, 14));
-        Objects.requireNonNull(hay).setMaterial(new BlinnPhongShading(0.19, 0.11, 0.15, 60, false, false));
-        scene02.addObject(hay);
+        Object3D momCow2 = OBJReader.getModel3D("render02.obj", new Vector3D(-1, -1.5, 6), new Vector3D(0.75, 0.75, 0.75), new Color(30, 23, 9));
+        Objects.requireNonNull(momCow2).setMaterial(new BlinnPhongShading(0.20, 0.1, 0.24, 45));
+        momCow2.setReflective(false);
+        momCow2.setReflectiveK(0);
+        scene02.addObject(momCow2);
 
-        finalScene = scene02;
+        Object3D babyCow2 = OBJReader.getModel3D("CowY90_2.obj", new Vector3D(6, -2, 2), new Vector3D(0.5, 0.5, 0.5), new Color(70, 30, 10));
+        Objects.requireNonNull(babyCow2).setMaterial(new BlinnPhongShading(0.20, 0.15, 0.24, 90));
+        babyCow2.setReflective(false);
+        babyCow2.setReflectiveK(0);
+        scene02.addObject(babyCow2);
+
+        Object3D hayB = OBJReader.getModel3D("HayBaleY45.obj", new Vector3D(-6, -2, 2.5), new Vector3D(0.5, 0.5, 0.5), new Color(100, 100, 10));
+        Objects.requireNonNull(hayB).setMaterial(new BlinnPhongShading(0.20, 0.15, 0.24, 120));
+        hayB.setReflective(false);
+        hayB.setReflectiveK(0);
+        scene02.addObject(hayB);
+
+        Object3D hayB2 = OBJReader.getModel3D("HayBaleY90.obj", new Vector3D(6, -2, 4), new Vector3D(0.5, 0.5, 0.5), new Color(100, 100, 10));
+        Objects.requireNonNull(hayB2).setMaterial(new BlinnPhongShading(0.24, 0.19, 0.27, 120));
+        hayB2.setReflective(false);
+        hayB2.setReflectiveK(0);
+        scene02.addObject(hayB2);
+
+        Object3D ufo = OBJReader.getModel3D("Ufo.obj", new Vector3D(0, 4.5, 6), new Vector3D(0.5, 0.5, 0.5), new Color(175, 175, 45));
+        Objects.requireNonNull(ufo).setMaterial(new BlinnPhongShading(0.20, 0.15, 0.19, 60));
+        ufo.setReflective(true);
+        ufo.setReflectiveK(0.48);
+        scene02.addObject(ufo);
+
+        Scene scene03 = new Scene();
+
+        scene03.setCamera(new Camera(new Vector3D(0, 0, -4), 198, 108, 90, 60, 0.5, 24.0));
+
+        scene03.addLight(new PointLight(new Vector3D(0, -5, 5.5), Color.WHITE, 0.6));
+        scene03.addLight(new PointLight(new Vector3D(0, 1, 0), Color.LIGHT_GRAY, 0.45));
+
+        Object3D ufo2 = OBJReader.getModel3D("Ufo.obj", new Vector3D(0, 4, 5), new Vector3D(1, 1, 1), new Color(159, 124, 64));
+        Objects.requireNonNull(ufo2).setMaterial(new BlinnPhongShading(0.20, 0.13, 0.19, 65));
+        ufo2.setReflective(true);
+        ufo2.setReflectiveK(0.84);
+        scene03.addObject(ufo2);
+
+        Object3D cowFly = OBJReader.getModel3D("CowAbdused.obj", new Vector3D(0, -4.5, 8), new Vector3D(1, 1, 1), new Color(70, 30, 10));
+        Objects.requireNonNull(cowFly).setMaterial(new BlinnPhongShading(0.20, 0.13, 0.19, 65));
+        cowFly.setReflective(true);
+        cowFly.setReflectiveK(0.75);
+        scene03.addObject(cowFly);
+
+        Object3D hayB3 = OBJReader.getModel3D("HayBaleY45.obj", new Vector3D(8, -4.5, 8), new Vector3D(1, 1, 1), new Color(153, 106, 11));
+        Objects.requireNonNull(hayB3).setMaterial(new BlinnPhongShading(0.20, 0.13, 0.19, 65));
+        hayB3.setReflective(true);
+        hayB3.setReflectiveK(0.75);
+        scene03.addObject(hayB3);
+
+        Object3D hayB4 = OBJReader.getModel3D("HayBaleY90.obj", new Vector3D(-8, -4.5, 8), new Vector3D(1, 1, 1), new Color(153, 156, 11));
+        Objects.requireNonNull(hayB4).setMaterial(new BlinnPhongShading(0.20, 0.13, 0.19, 65));
+        hayB4.setReflective(true);
+        hayB4.setReflectiveK(0.86);
+        scene03.addObject(hayB4);
+
+        finalScene = scene03;
+
         return finalScene;
     }
 }

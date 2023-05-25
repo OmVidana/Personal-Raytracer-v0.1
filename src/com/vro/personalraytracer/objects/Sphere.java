@@ -7,7 +7,9 @@ import com.vro.personalraytracer.tools.Vector3D;
 import java.awt.*;
 
 /**
- * The type Sphere.
+ * Class Sphere which inherits from Object3D.
+ *
+ * @author Omar Vidaña Rodríguez
  */
 public class Sphere extends Object3D {
     private double radius;
@@ -17,65 +19,10 @@ public class Sphere extends Object3D {
      *
      * @param center the center
      * @param radius the radius
-     */
-    public Sphere(Vector3D center, double radius, Vector3D scale) {
-        super(center, new Color(0, 0, 0));
-        setRadius(radius);
-    }
-
-    /**
-     * Instantiates a new Sphere.
-     *
-     * @param center the center
-     * @param radius the radius
      * @param color  the color
      */
-    public Sphere(Vector3D center, double radius, Color color) {
-        super(center, color);
-        setRadius(radius);
-    }
-
-    /**
-     * Instantiates a new Sphere.
-     *
-     * @param center the center
-     * @param radius the radius
-     * @param red    the red
-     * @param green  the green
-     * @param blue   the blue
-     */
-    public Sphere(Vector3D center, double radius, int red, int green, int blue) {
-        super(center, new Color(red, green, blue));
-        setRadius(radius);
-    }
-
-    /**
-     * Instantiates a new Sphere.
-     *
-     * @param x      the x
-     * @param y      the y
-     * @param z      the z
-     * @param radius the radius
-     * @param color  the color
-     */
-    public Sphere(double x, double y, double z, double radius, Color color) {
-        super(new Vector3D(x, y, z), color);
-        setRadius(radius);
-    }
-
-    /**
-     * Instantiates a new Sphere.
-     *
-     * @param x      the x
-     * @param y      the y
-     * @param z      the z
-     * @param radius the radius
-     * @param red    the red
-     * @param green  the green
-     * @param blue   the blue
-     */
-    public Sphere(double x, double y, double z, double radius, int red, int green, int blue) {
-        super(new Vector3D(x, y, z), new Color(red, green, blue));
+    public Sphere(Vector3D center, double radius, Color color, boolean isReflective, double reflectiveK, boolean isRefractive, double refractiveK) {
+        super(center, color, isReflective, reflectiveK, isRefractive, refractiveK);
         setRadius(radius);
     }
 

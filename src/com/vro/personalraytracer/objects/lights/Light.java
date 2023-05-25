@@ -24,7 +24,7 @@ public abstract class Light extends Object3D {
      * @param intensity Light Intensity.
      */
     public Light(Vector3D position, Color color, double intensity) {
-        super(position, color);
+        super(position, color, false, 0, false, 0);
         setIntensity(intensity);
     }
 

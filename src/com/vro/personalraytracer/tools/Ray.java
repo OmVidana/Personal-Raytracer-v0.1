@@ -2,7 +2,9 @@ package com.vro.personalraytracer.tools;
 
 
 /**
- * The type Ray.
+ *
+ * @autor Jafet Rodríguez - implemented by Omar Vidaña Rodríguez.
+ * Class Type Ray. Used to calculate colors and directions.
  */
 public class Ray {
     private Vector3D origin;
@@ -11,8 +13,8 @@ public class Ray {
     /**
      * Instantiates a new Ray.
      *
-     * @param origin    the origin
-     * @param direction the direction
+     * @param origin    Vector3D Ray Origin.
+     * @param direction Vector3D Ray Direction.
      */
     public Ray(Vector3D origin, Vector3D direction) {
         setOrigin(origin);
@@ -20,15 +22,16 @@ public class Ray {
     }
 
     /**
-     * Gets origin.
+     * Gets Origin.
      *
-     * @return the origin
+     * @return origin
      */
     public Vector3D getOrigin() {
         return origin;
     }
 
-    private void setOrigin(Vector3D origin) {
+
+    public void setOrigin(Vector3D origin) {
         this.origin = origin;
     }
 
@@ -41,7 +44,8 @@ public class Ray {
         return Vector3D.normalize(direction);
     }
 
-    private void setDirection(Vector3D direction) {
+
+    public void setDirection(Vector3D direction) {
         this.direction = direction;
     }
 }

@@ -5,7 +5,7 @@ import com.vro.personalraytracer.objects.Triangle;
 /**
  * The type Barycentric.
  *
- * @author Jafet Rodríguez
+ * @author Jafet Rodríguez - implemented by Omar Vidaña Rodríguez.
  * @see <a href="https://www.amazon.com/Real-Time-Collision-Detection-Interactive-Technology/dp/1558607323">Christer Ericson's Real-Time Collision Detection</a>
  */
 public class Barycentric {

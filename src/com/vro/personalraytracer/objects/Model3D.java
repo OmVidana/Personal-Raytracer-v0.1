@@ -26,8 +26,8 @@ public class Model3D extends Object3D {
      * @param triangles Triangle[] Model3D Triangles.
      * @param color     Model3D Color.
      */
-    public Model3D(Vector3D position, Triangle[] triangles, Color color) {
-        super(position, color);
+    public Model3D(Vector3D position, Triangle[] triangles, Color color, boolean isReflective, double reflectiveK, boolean isRefractive, double refractiveK) {
+        super(position, color, isReflective, reflectiveK, isRefractive, refractiveK);
         setTriangles(triangles, new Vector3D(1, 1, 1));
     }
 
@@ -39,8 +39,8 @@ public class Model3D extends Object3D {
      * @param triangles Triangle[] Model3D Triangles.
      * @param color     Model3D Color.
      */
-    public Model3D(Vector3D position, Vector3D scale, Triangle[] triangles, Color color) {
-        super(position, scale, color);
+    public Model3D(Vector3D position, Vector3D scale, Triangle[] triangles, Color color, boolean isReflective, double reflectiveK, boolean isRefractive, double refractiveK) {
+        super(position, scale, color, isReflective, reflectiveK, isRefractive, refractiveK);
         setTriangles(triangles, scale);
     }
 

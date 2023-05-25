@@ -5,7 +5,7 @@ import com.vro.personalraytracer.objects.Object3D;
 /**
  * The type Intersection.
  *
- * @autor
+ * @autor Omar Vidaña Rodríguez
  */
 public class Intersection {
     private double distance;
