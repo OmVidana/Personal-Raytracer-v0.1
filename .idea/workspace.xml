@@ -7,11 +7,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5a46513-7fa2-4c27-bfe4-ab0e4bfaca25" name="Changes" comment="0.9 Render Scene 1">
+    <list default="true" id="b5a46513-7fa2-4c27-bfe4-ab0e4bfaca25" name="Changes" comment="0.95 Reflection Added!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/ParallelRT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/ParallelRT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/Raytracer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/Raytracer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/materials/BlinnPhongShading.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/materials/BlinnPhongShading.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/renders/testblinnPhongReflection.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/renders/testblinnPhongReflection.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/objs/Floor.obj" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objs/Floor.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/renders/testblinnPhongReflection2.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/renders/testblinnPhongReflection2.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -185,7 +187,8 @@
       <workItem from="1684864735783" duration="33266000" />
       <workItem from="1684908324969" duration="1926000" />
       <workItem from="1684920989839" duration="10369000" />
-      <workItem from="1684957796688" duration="11669000" />
+      <workItem from="1684957796688" duration="17465000" />
+      <workItem from="1684979244146" duration="5188000" />
     </task>
     <task id="LOCAL-00001" summary="Raytracer v0.1 done">
       <created>1681997840598</created>
@@ -222,7 +225,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684967961787</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="0.95 Reflection Added!">
+      <created>1684969516232</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1684969516232</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -257,7 +267,9 @@
     <MESSAGE value="Raytracer v0.7.5 done. Added Scale and Light Falloff" />
     <MESSAGE value="Raytracer 0.9 Done. BlinnPhongShading Implemented." />
     <MESSAGE value="0.9 Render Scene 1" />
-    <option name="LAST_COMMIT_MESSAGE" value="0.9 Render Scene 1" />
+    <MESSAGE value="0.95 Refrection Added!" />
+    <MESSAGE value="0.95 Reflection Added!" />
+    <option name="LAST_COMMIT_MESSAGE" value="0.95 Reflection Added!" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

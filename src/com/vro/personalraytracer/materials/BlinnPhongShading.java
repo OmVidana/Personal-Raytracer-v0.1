@@ -11,28 +11,28 @@ import static com.vro.personalraytracer.ParallelRT.raycast;
 
 public class BlinnPhongShading {
 
-    double ambient;
+    double ambientFactor;
     double diffuseFactor;
     double specularFactor;
     double specularExponent;
     boolean isReflective;
-
     boolean isRefractive;
 
-    public BlinnPhongShading(double ambient, double diffuseFactor, double specularFactor, double specularExponent, boolean isReflective) {
-        setAmbient(ambient);
+    public BlinnPhongShading(double ambient, double diffuseFactor, double specularFactor, double specularExponent, boolean isReflective, boolean isRefractive) {
+        setAmbientFactor(ambient);
         setDiffuseFactor(diffuseFactor);
         setSpecularFactor(specularFactor);
         setSpecularExponent(specularExponent);
         setReflective(isReflective);
+
     }
 
-    public double getAmbient() {
-        return ambient;
+    public double getAmbientFactor() {
+        return ambientFactor;
     }
 
-    public void setAmbient(double ambient) {
-        this.ambient = ambient;
+    public void setAmbientFactor(double ambient) {
+        this.ambientFactor = ambient;
     }
 
     public double getDiffuseFactor() {
@@ -67,36 +67,31 @@ public class BlinnPhongShading {
         isReflective = reflective;
     }
 
-    public Color getAmbient(Intersection intersection, double ambient) {
-        return ColorsHandler.multiply(intersection.getObject().getColor(), ambient);
+    public boolean isRefractive() {
+        return isRefractive;
     }
 
-    public Color getDiffuse(Intersection intersection, Light light, double scalar) {
-        Vector3D N = intersection.getNormal();
-        Vector3D P = intersection.getPosition();
-        Vector3D L = Vector3D.normalize(Vector3D.vectorSubstraction(light.getPosition(), intersection.getPosition()));
+    public void setRefractive(boolean refractive) {
+        isRefractive = refractive;
+    }
+
+    public Color getAmbient(Intersection intersection) {
+        return ColorsHandler.multiply(intersection.getObject().getColor(), getAmbientFactor());
+    }
+
+    public Color getDiffuse(Intersection intersection, Light light) {
         double diffuseFactor = Math.max(light.getNDotL(intersection), 0);
-        Color lightDiffuseColor = ColorsHandler.multiply(light.getColor(), diffuseFactor);
-        return ColorsHandler.multiply(lightDiffuseColor, scalar);
+        Color lightDiffuseColor = ColorsHandler.multiply(light.getColor(), getDiffuseFactor());
+        return ColorsHandler.multiply(lightDiffuseColor, getAmbientFactor());
     }
 
-    public Color getSpecular(Intersection intersection, Vector3D cameraPos, Light light, double scalar, double exponent) {
-        Vector3D N = intersection.getNormal();
-        Vector3D P = intersection.getPosition();
-        Vector3D L = Vector3D.normalize(Vector3D.vectorSubstraction(light.getPosition(), intersection.getPosition()));
-        Vector3D V = Vector3D.normalize(Vector3D.vectorSubstraction(P, cameraPos));
-        Vector3D H = Vector3D.normalize(Vector3D.vectorAddition(V,L));
-        Color specularColor = ColorsHandler.multiply(intersection.getObject().getColor(), scalar);
-        double shininess = Math.pow(Vector3D.dotProduct(N, H), exponent);
+    public Color getSpecular(Intersection intersection, Light light, Vector3D N, Vector3D H) {
+        Color specularColor = ColorsHandler.multiply(intersection.getObject().getColor(), getSpecularFactor());
+        double shininess = Math.pow(Vector3D.dotProduct(N, H), getSpecularExponent());
         return ColorsHandler.multiply(ColorsHandler.multiply(specularColor, light.getColor()), shininess);
     }
 
-    public static Vector3D directionReflection(Intersection intersection, Vector3D cameraPos, Light light) {
-        Vector3D N = intersection.getNormal();
-        Vector3D P = intersection.getPosition();
-        Vector3D L = Vector3D.normalize(Vector3D.vectorSubstraction(light.getPosition(), intersection.getPosition()));
-        Vector3D V = Vector3D.normalize(Vector3D.vectorSubstraction(P, cameraPos));
-        Vector3D H = Vector3D.normalize(Vector3D.vectorAddition(V,L));
+    public static Vector3D directionReflection(Vector3D N, Vector3D V) {
         return Vector3D.vectorAddition(Vector3D.scalarMultiplication(Vector3D.scalarMultiplication(N, Vector3D.dotProduct(V,N)), -2), V);
     }
 

@@ -47,7 +47,7 @@ public class ParallelRT {
 
         parallelMethod(selectedScene);
 
-        File outputImage = new File(renderPath + "testblinnPhongReflection2.png");
+        File outputImage = new File(renderPath + "OmarVidaña_Render.png");
         try {
             ImageIO.write(render, "png", outputImage);
         } catch (Exception e) {
@@ -105,7 +105,7 @@ public class ParallelRT {
      * @param depth               the depth
      * @return the runnable
      */
-    public static Runnable raytrace(int i, int j, Camera mainCamera, double[] nearFarPlanes, List<Object3D> objects, List<Light> lights, Vector3D[][] positionsToRaytrace, final int depth) {
+    public static Runnable raytrace(int i, int j, Camera mainCamera, double[] nearFarPlanes, List<Object3D> objects, List<Light> lights, Vector3D[][] positionsToRaytrace, int depth) {
 
         return new Runnable() {
             @Override
@@ -136,9 +136,16 @@ public class ParallelRT {
                         double[] lightColors = new double[]{lightColor.getRed() / 255.0, lightColor.getGreen() / 255.0, lightColor.getBlue() / 255.0};
                         double[] objColors = new double[]{objColor.getRed() / 255.0, objColor.getGreen() / 255.0, objColor.getBlue() / 255.0};
 
+                        //Values for BlinnPhongShading
+                        Vector3D N = closestIntersection.getNormal();
+                        Vector3D P = closestIntersection.getPosition();
+                        Vector3D L = Vector3D.normalize(Vector3D.vectorSubstraction(light.getPosition(), closestIntersection.getPosition()));
+                        Vector3D V = Vector3D.normalize(Vector3D.vectorSubstraction(P, mainCamera.getPosition()));
+                        Vector3D H = Vector3D.normalize(Vector3D.vectorAddition(V,L));
+
                         for (Object3D object : objects) {
                             if (!object.equals(closestIntersection.getObject())) {
-                                Ray shadowRay = new Ray(closestIntersection.getPosition(), Vector3D.normalize(Vector3D.vectorSubstraction(light.getPosition(), closestIntersection.getPosition())));
+                                Ray shadowRay = new Ray(closestIntersection.getPosition(), Vector3D.vectorAddition(Vector3D.normalize(Vector3D.vectorSubstraction(light.getPosition(), closestIntersection.getPosition())), Vector3D.scalarMultiplication(Vector3D.normalize(Vector3D.vectorSubstraction(light.getPosition(), closestIntersection.getPosition())), 0.001)));
                                 Intersection shadowIntersection = object.getIntersection(shadowRay);
                                 if (shadowIntersection != null && shadowIntersection.getDistance() > 0 && shadowIntersection.getDistance() < closestIntersection.getDistance()) {
                                     insideShadow = true;
@@ -149,7 +156,7 @@ public class ParallelRT {
 
                         if (!insideShadow) {
                             for (int colorIndex = 0; colorIndex < objColors.length; colorIndex++) {
-                                objColors[colorIndex] *= lightFallOff * ColorsHandler.addColor(ColorsHandler.addColor(closestIntersection.getObject().getMaterial().getAmbient(closestIntersection, 0.02), closestIntersection.getObject().getMaterial().getDiffuse(closestIntersection, light, 0.25)), closestIntersection.getObject().getMaterial().getSpecular(closestIntersection, mainCamera.getPosition(), light, 0.75, 100)).getRed() * lightColors[colorIndex];
+                                objColors[colorIndex] *= lightFallOff * ColorsHandler.addColor(ColorsHandler.addColor(closestIntersection.getObject().getMaterial().getAmbient(closestIntersection), closestIntersection.getObject().getMaterial().getDiffuse(closestIntersection, light)), closestIntersection.getObject().getMaterial().getSpecular(closestIntersection, light, N, H)).getRed() * lightColors[colorIndex];
                             }
 
                             Color diffuse = new Color(ColorsHandler.clamp(objColors[0], 0, 1), ColorsHandler.clamp(objColors[1], 0, 1), ColorsHandler.clamp(objColors[2], 0, 1));
@@ -158,8 +165,8 @@ public class ParallelRT {
 
                         // Reflection
                         if (depthRecursive > 0 && closestIntersection.getObject().getMaterial().isReflective()) {
-                            Vector3D reflectDirection = BlinnPhongShading.directionReflection(closestIntersection, mainCamera.getPosition(), light);
-                            Ray reflectionRay = new Ray(closestIntersection.getPosition(), reflectDirection);
+                            Vector3D reflectDirection = BlinnPhongShading.directionReflection(N, V);
+                            Ray reflectionRay = new Ray(closestIntersection.getPosition(), Vector3D.vectorAddition(reflectDirection, Vector3D.scalarMultiplication(reflectDirection,0.001)));
                             Intersection reflectionIntersection = raycast(reflectionRay, objects, closestIntersection.getObject(), nearFarPlanes);
 
                             if (reflectionIntersection != null) {
@@ -224,54 +231,66 @@ public class ParallelRT {
         Scene finalScene;
 
         Scene scene01 = new Scene();
-        scene01.setCamera(new Camera(new Vector3D(0, 0, -4), 320, 180, 90, 60, 0.6, 50.0));
+        scene01.setCamera(new Camera(new Vector3D(0, 0, -4), 160, 90, 90, 60, 0.6, 50.0));
 
         scene01.addLight(new PointLight(new Vector3D(0, 4, 9), Color.WHITE, 0.3));
-        scene01.addLight(new PointLight(new Vector3D(4, 4, 6), Color.WHITE, 0.4));
-        scene01.addLight(new PointLight(new Vector3D(-4, 4, 6), Color.WHITE, 0.4));
+        scene01.addLight(new PointLight(new Vector3D(4, 4, 6), Color.WHITE, 0.3));
+        scene01.addLight(new PointLight(new Vector3D(-4, 4, 6), Color.WHITE, 0.3));
         scene01.addLight(new PointLight(new Vector3D(0, 4, 3), Color.WHITE, 0.3));
 
-
         Object3D bowlingFloor = OBJReader.getModel3D("BowlingFloor.obj", new Vector3D(0, -0.5, 1), new Vector3D(1, 1, 1), new Color(180, 100, 45));
-        Objects.requireNonNull(bowlingFloor).setMaterial(new BlinnPhongShading(0.40, 0.15, 0.40, 200, true));
+        Objects.requireNonNull(bowlingFloor).setMaterial(new BlinnPhongShading(0.10, 0.03, 0.30, 60, true, false));
         scene01.addObject(bowlingFloor);
 
         Object3D bowlingWall = OBJReader.getModel3D("BowlingWall.obj", new Vector3D(0, -2, 12.5), new Vector3D(1, 1, 1), new Color(11, 1, 74));
-        Objects.requireNonNull(bowlingWall).setMaterial(new BlinnPhongShading(0.30, 0.08, 0.22, 200, true));
+        Objects.requireNonNull(bowlingWall).setMaterial(new BlinnPhongShading(0.20, 0.08, 0.22, 45, false, false));
         scene01.addObject(bowlingWall);
 
         Object3D bowlingBall = OBJReader.getModel3D("BowlingBall.obj", new Vector3D(1.25, 0, 2.5), new Vector3D(1, 1, 1), Color.WHITE);
-        Objects.requireNonNull(bowlingBall).setMaterial(new BlinnPhongShading(0.35, 0.15, 0.36, 200, false));
+        Objects.requireNonNull(bowlingBall).setMaterial(new BlinnPhongShading(0.3, 0.15, 0.36, 45, false, false));
         scene01.addObject(bowlingBall);
 
         Object3D bowlingPin = OBJReader.getModel3D("BowlingPin.obj", new Vector3D(0, -3, 10), new Vector3D(1, 1, 1), Color.WHITE);
-        Objects.requireNonNull(bowlingPin).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.12, 100, true));
+        Objects.requireNonNull(bowlingPin).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.12, 45, true, false));
         scene01.addObject(bowlingPin);
 
         Object3D bowlingPinDecoration = OBJReader.getModel3D("BowlingPin.obj", new Vector3D(-10, -1, 10), new Vector3D(2, 2, 2), Color.WHITE);
-        Objects.requireNonNull(bowlingPinDecoration).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.24, 200, true));
+        Objects.requireNonNull(bowlingPinDecoration).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.24, 45, true, false));
         scene01.addObject(bowlingPinDecoration);
 
         Object3D bowlingPinDecoration2 = OBJReader.getModel3D("BowlingPin.obj", new Vector3D(10, -1, 10), new Vector3D(2, 2, 2), Color.WHITE);
-        Objects.requireNonNull(bowlingPinDecoration2).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.24, 200, true));
+        Objects.requireNonNull(bowlingPinDecoration2).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.24, 60, true, false));
         scene01.addObject(bowlingPinDecoration2);
 
         Object3D bowlingCeiling = OBJReader.getModel3D("Ceiling.obj", new Vector3D(0, 8, 12), new Vector3D(12, 1, 12), Color.RED);
-        Objects.requireNonNull(bowlingCeiling).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.24, 200, true));
+        Objects.requireNonNull(bowlingCeiling).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.24, 45, false, false));
         scene01.addObject(bowlingCeiling);
 
         Scene scene02 = new Scene();
-        scene02.setCamera(new Camera(new Vector3D(0, 0, -4), 1280, 720, 90, 60, 0.6, 50.0));
+        scene02.setCamera(new Camera(new Vector3D(0, 0, -4), 370, 180, 90, 60, 0.5, 20.0));
 
-        scene02.addLight(new DirectionalLight(new Vector3D(), new Vector3D(0,0,1), Color.WHITE, 0.2));
+        scene02.addLight(new PointLight(new Vector3D(0, 3, -2), Color.WHITE, 0.4));
+        scene02.addLight(new PointLight(new Vector3D(0, 3, 16), Color.WHITE, 0.4));
 
-        Sphere sphere1 = new Sphere(new Vector3D(3,0,4),2, Color.CYAN);
-        sphere1.setMaterial(new BlinnPhongShading(0.10, 0.15, 0.34, 100, true));
-        scene02.addObject(sphere1);
+        Object3D momCow = OBJReader.getModel3D("Cow.obj", new Vector3D(0, -1, 5), new Vector3D(1, 1, 1), new Color(30, 23, 9));
+        Objects.requireNonNull(momCow).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.24, 45, false, false));
+        scene02.addObject(momCow);
 
-        Sphere sphere2 = new Sphere(new Vector3D(-3,0,4), 2, Color.RED);
-        sphere2.setMaterial(new BlinnPhongShading(0.15, 0.15, 0.4, 100, true));
-        scene02.addObject(sphere2);
+        Object3D babyCow = OBJReader.getModel3D("Cow.obj", new Vector3D(2, -1, 5), new Vector3D(0.5, 0.5, 0.5), new Color(180, 160, 140));
+        Objects.requireNonNull(babyCow).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.24, 45, false, false));
+        scene02.addObject(babyCow);
+
+//        Object3D ufo = OBJReader.getModel3D("Ufo.obj", new Vector3D(0, 2, 1), new Vector3D(1, 1, 1), Color.LIGHT_GRAY);
+//        Objects.requireNonNull(babyCow).setMaterial(new BlinnPhongShading(0.24, 0.07, 0.13, 55, true, false));
+//        scene02.addObject(ufo);
+
+        Object3D floor = OBJReader.getModel3D("Floor.obj", new Vector3D(0, -2, 5), new Vector3D(15, 1, 15), new Color(0, 45, 2));
+        Objects.requireNonNull(bowlingFloor).setMaterial(new BlinnPhongShading(0.19, 0.11, 0.15, 60, false, false));
+        scene02.addObject(bowlingFloor);
+
+        Object3D hay = OBJReader.getModel3D("HayBale.obj", new Vector3D(-3, -1, 5), new Vector3D(1, 1, 1), new Color(154, 131, 14));
+        Objects.requireNonNull(hay).setMaterial(new BlinnPhongShading(0.19, 0.11, 0.15, 60, false, false));
+        scene02.addObject(hay);
 
         finalScene = scene02;
         return finalScene;

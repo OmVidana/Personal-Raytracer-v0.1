@@ -34,7 +34,7 @@ public class Raytracer {
 
         Scene selectedScene = sceneManager();
 
-        BufferedImage image = raytrace(selectedScene);
+        BufferedImage image = raytrace(selectedScene, 3);
         File outputImage = new File(renderPath + "shadowBox1.png");
         try {
             ImageIO.write(image, "png", outputImage);
@@ -51,7 +51,7 @@ public class Raytracer {
      * @param scene the scene
      * @return the buffered image
      */
-    public static BufferedImage raytrace(Scene scene) {
+    public static BufferedImage raytrace(Scene scene, int depthRecursive) {
         Camera mainCamera = scene.getCamera();
         double[] nearFarPlanes = mainCamera.getNearFarPlanes();
 //        double cameraZ = mainCamera.getPosition().getZ();
@@ -79,9 +79,16 @@ public class Raytracer {
                         double intensity = light.getIntensity() * nDotL;
                         double lightDistance = Vector3D.vectorSubstraction(light.getPosition(), closestIntersection.getPosition()).getMagnitude();
                         Color lightColor = light.getColor();
-                        double lightFallOff = (intensity / Math.pow(lightDistance, 2));
+                        double lightFallOff = (intensity / Math.pow(lightDistance, 3));
                         double[] lightColors = new double[]{lightColor.getRed() / 255.0, lightColor.getGreen() / 255.0, lightColor.getBlue() / 255.0};
                         double[] objColors = new double[]{objColor.getRed() / 255.0, objColor.getGreen() / 255.0, objColor.getBlue() / 255.0};
+
+                        //Values for BlinnPhongShading
+                        Vector3D N = closestIntersection.getNormal();
+                        Vector3D P = closestIntersection.getPosition();
+                        Vector3D L = Vector3D.normalize(Vector3D.vectorSubstraction(light.getPosition(), closestIntersection.getPosition()));
+                        Vector3D V = Vector3D.normalize(Vector3D.vectorSubstraction(P, mainCamera.getPosition()));
+                        Vector3D H = Vector3D.normalize(Vector3D.vectorAddition(V,L));
 
                         for (Object3D object : objects) {
                             if (!object.equals(closestIntersection.getObject())) {
@@ -96,12 +103,24 @@ public class Raytracer {
 
                         if (!insideShadow) {
                             for (int colorIndex = 0; colorIndex < objColors.length; colorIndex++) {
-                                objColors[colorIndex] *= lightFallOff * ColorsHandler.addColor(ColorsHandler.addColor(closestIntersection.getObject().getMaterial().getAmbient(closestIntersection, 0.02), closestIntersection.getObject().getMaterial().getDiffuse(closestIntersection, light, 0.25)), closestIntersection.getObject().getMaterial().getSpecular(closestIntersection, mainCamera.getPosition(), light, 0.75, 100)).getRed() * lightColors[colorIndex];
+                                objColors[colorIndex] *= lightFallOff * ColorsHandler.addColor(ColorsHandler.addColor(closestIntersection.getObject().getMaterial().getAmbient(closestIntersection), closestIntersection.getObject().getMaterial().getDiffuse(closestIntersection, light)), closestIntersection.getObject().getMaterial().getSpecular(closestIntersection, light, N, H)).getRed() * lightColors[colorIndex];
                             }
 
                             Color diffuse = new Color(ColorsHandler.clamp(objColors[0], 0, 1), ColorsHandler.clamp(objColors[1], 0, 1), ColorsHandler.clamp(objColors[2], 0, 1));
                             pixelColor = ColorsHandler.addColor(pixelColor, diffuse);
                         }
+
+                        // Reflection
+//                        if (depthRecursive > 0 && closestIntersection.getObject().getMaterial().isReflective()) {
+//                            Vector3D reflectDirection = BlinnPhongShading.directionReflection(N, V);
+//                            Ray reflectionRay = new Ray(closestIntersection.getPosition(), reflectDirection);
+//                            Intersection reflectionIntersection = raycast(reflectionRay, objects, closestIntersection.getObject(), nearFarPlanes);
+//
+//                            if (reflectionIntersection != null) {
+//                                Color reflection = raytrace(scene,depthRecursive - 1); ??
+//                                pixelColor = ColorsHandler.addColor(pixelColor, reflection);
+//                            }
+//                        }
                     }
                 }
 
@@ -177,15 +196,15 @@ public class Raytracer {
 
         Object3D bowlingFloor = OBJReader.getModel3D("Floor.obj", new Vector3D(0, -1, 4), new Vector3D(1.5, 1.5, 1.5), Color.YELLOW);
 
-        Objects.requireNonNull(bowlingFloor).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.12, 100, false));
+        Objects.requireNonNull(bowlingFloor).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.12, 100, false, false));
         scene03.addObject(bowlingFloor);
 
         Object3D bowlingBall = OBJReader.getModel3D("BowlingBall.obj", new Vector3D(0, 0, 3), new Vector3D(0.75, 0.75, 0.75), Color.BLUE);
-        Objects.requireNonNull(bowlingBall).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.12, 100, true));
+        Objects.requireNonNull(bowlingBall).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.12, 100, true, false));
         scene03.addObject(bowlingBall);
 
         Object3D wall = OBJReader.getModel3D("VanDerWaal.obj", new Vector3D(0,0, 4), new Vector3D(2, 2, 2), Color.RED);
-        Objects.requireNonNull(wall).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.12, 100, true));
+        Objects.requireNonNull(wall).setMaterial(new BlinnPhongShading(0.20, 0.05, 0.12, 100, true, false));
         scene03.addObject(wall);
         finalScene = scene03;
         return finalScene;
