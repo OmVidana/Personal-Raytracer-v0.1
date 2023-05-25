@@ -49,11 +49,6 @@ public class DirectionalLight extends Light{
         return Math.max(Vector3D.dotProduct(intersection.getNormal(), Vector3D.scalarMultiplication(getDirection(), -1.0)), 0.0);
     }
 
-//    @Override
-//    public Intersection getShadowIntersection(Intersection intersection) {
-//        return null;
-//    }
-
     @Override
     public void increaseSize(Vector3D scale) {
         setIntensity(getIntensity() + scale.getMagnitude());

@@ -29,12 +29,6 @@ public class PointLight extends Light {
         return Math.max(Vector3D.dotProduct(N,L), 0.0);
     }
 
-//    @Override
-//    public Intersection getShadowIntersection(Intersection intersection) {
-//        intersection.getDistance();
-//        return null;
-//    }
-
     @Override
     public void increaseSize(Vector3D scale) {
         setIntensity(getIntensity() + scale.getMagnitude());

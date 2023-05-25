@@ -7,7 +7,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5a46513-7fa2-4c27-bfe4-ab0e4bfaca25" name="Changes" comment="Raytracer 0.9 Done. BlinnPhongShading Implemented." />
+    <list default="true" id="b5a46513-7fa2-4c27-bfe4-ab0e4bfaca25" name="Changes" comment="Change in .objs">
+      <change afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objs/test.mtl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objs/test.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/ParallelRT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/ParallelRT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/Raytracer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/Raytracer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/materials/BlinnPhongShading.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/materials/BlinnPhongShading.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Camera.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Model3D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Model3D.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Object3D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Object3D.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Sphere.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/Sphere.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/lights/Light.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objects/lights/Light.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/objs/Cow.obj" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objs/Cow.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/objs/Floor.obj" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objs/Floor.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/objs/Ufo.obj" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/objs/Ufo.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/renders/OmarVidaña_Render.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/renders/OmarVidaña_Render.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/tools/Barycentric.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/tools/Barycentric.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/tools/ColorsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/tools/ColorsHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/tools/Intersection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/tools/Intersection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/tools/OBJReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/tools/OBJReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/tools/Ray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/tools/Ray.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/vro/personalraytracer/tools/Vector3D.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/vro/personalraytracer/tools/Vector3D.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -22,6 +44,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="0.9" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="UPDATE_TYPE" value="REBASE" />
   </component>
@@ -58,7 +85,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/ovidanar/Documentos/Personal-Raytracer-v0.7&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/ovidanar/Desktop&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -66,7 +93,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;settings.editor.splitter.proportion&quot;: &quot;0.27208835&quot;,
     &quot;two.files.diff.last.used.file&quot;: &quot;D:/Omar VR/D2/UP_CG_Code_Session24_20230427_RT0.4/Session24_20230427_RT0.4/src/edu/up/isgc/cg/raytracer/Raytracer.java&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
@@ -174,6 +201,13 @@
       <workItem from="1684861845867" duration="2875000" />
       <workItem from="1684864735783" duration="33266000" />
       <workItem from="1684908324969" duration="1926000" />
+      <workItem from="1684920989839" duration="10369000" />
+      <workItem from="1684957796688" duration="17465000" />
+      <workItem from="1684979244146" duration="5188000" />
+      <workItem from="1684986901995" duration="34673000" />
+      <workItem from="1685027317442" duration="2836000" />
+      <workItem from="1685030179222" duration="50000" />
+      <workItem from="1685030805762" duration="22000" />
     </task>
     <task id="LOCAL-00001" summary="Raytracer v0.1 done">
       <created>1681997840598</created>
@@ -203,7 +237,28 @@
       <option name="project" value="LOCAL" />
       <updated>1684920510067</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="0.9 Render Scene 1">
+      <created>1684967961787</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1684967961787</updated>
+    </task>
+    <task id="LOCAL-00006" summary="0.95 Reflection Added!">
+      <created>1684969516232</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1684969516232</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Change in .objs">
+      <created>1684987195880</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1684987195880</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -237,7 +292,11 @@
     <MESSAGE value="Raytracer v0.7 done. Added PointLight.&#10;Added version 0.5 and 0.6." />
     <MESSAGE value="Raytracer v0.7.5 done. Added Scale and Light Falloff" />
     <MESSAGE value="Raytracer 0.9 Done. BlinnPhongShading Implemented." />
-    <option name="LAST_COMMIT_MESSAGE" value="Raytracer 0.9 Done. BlinnPhongShading Implemented." />
+    <MESSAGE value="0.9 Render Scene 1" />
+    <MESSAGE value="0.95 Refrection Added!" />
+    <MESSAGE value="0.95 Reflection Added!" />
+    <MESSAGE value="Change in .objs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Change in .objs" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

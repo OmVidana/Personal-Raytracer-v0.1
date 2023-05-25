@@ -31,7 +31,7 @@ public class Camera extends Object3D {
      * @param farPlane  Clipping Far Plane.
      */
     public Camera(Vector3D position, int width, int height, double fovH, double fovV, double nearPlane, double farPlane) {
-        super(position, Color.BLACK);
+        super(position, Color.BLACK, false, 0, false, 0);
         setWidth(width);
         setHeight(height);
         setFovH(fovH);
@@ -183,11 +183,11 @@ public class Camera extends Object3D {
 
     @Override
     public void increaseSize(Vector3D scale) {
-
+        //Not necessary, empty.
     }
 
     @Override
     public void decreaseSize(Vector3D scale) {
-
+        //Not necessary, empty.
     }
 }

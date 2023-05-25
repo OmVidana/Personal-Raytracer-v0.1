@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>/home/ovidanar/Documentos/Personal-Raytracer-v0.7</OriginalElement>
+  <nodes>
+    <node x="1710.5" y="-16.0">com.vro.personalraytracer.tools.Vector3D</node>
+    <node x="1031.0" y="1421.0">com.vro.personalraytracer.ParallelRT</node>
+    <node x="910.5" y="-16.0">com.vro.personalraytracer.objects.IsIntersectable</node>
+    <node x="1803.0" y="1421.0">com.vro.personalraytracer.tools.Ray</node>
+    <node x="747.0" y="1421.0">com.vro.personalraytracer.tools.Scene</node>
+    <node x="1043.75" y="205.5">com.vro.personalraytracer.objects.Triangle</node>
+    <node x="359.0" y="1802.0">com.vro.personalraytracer.tools.OBJReader</node>
+    <node x="342.0" y="1421.0">com.vro.personalraytracer.tools.Intersection</node>
+    <node x="123.5" y="829.0">com.vro.personalraytracer.objects.lights.Light</node>
+    <node x="1262.5" y="679.0">com.vro.personalraytracer.objects.Camera</node>
+    <node x="-100.0" y="1190.0">com.vro.personalraytracer.objects.lights.DirectionalLight</node>
+    <node x="1495.0" y="1421.0">com.vro.personalraytracer.tools.ColorsHandler</node>
+    <node x="-100.0" y="1421.0">com.vro.personalraytracer.materials.BlinnPhongShading</node>
+    <node x="-100.0" y="1802.0">com.vro.personalraytracer.tools.Barycentric</node>
+    <node x="822.5" y="816.5">com.vro.personalraytracer.objects.Sphere</node>
+    <node x="279.99999999999994" y="1215.0">com.vro.personalraytracer.objects.lights.PointLight</node>
+    <node x="604.75" y="93.0">com.vro.personalraytracer.objects.Object3D</node>
+    <node x="389.5" y="804.0">com.vro.personalraytracer.objects.Model3D</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.vro.personalraytracer.objects.Sphere" target="com.vro.personalraytracer.objects.Object3D" relationship="GENERALIZATION">
+      <point x="0.0" y="-93.0" />
+      <point x="1032.5" y="654.0" />
+      <point x="814.25" y="654.0" />
+      <point x="0.0" y="268.0" />
+    </edge>
+    <edge source="com.vro.personalraytracer.objects.Object3D" target="com.vro.personalraytracer.objects.IsIntersectable" relationship="REALIZATION">
+      <point x="0.0" y="-268.0" />
+      <point x="814.25" y="68.0" />
+      <point x="1033.5" y="68.0" />
+      <point x="0.0" y="29.5" />
+    </edge>
+    <edge source="com.vro.personalraytracer.objects.Triangle" target="com.vro.personalraytracer.objects.IsIntersectable" relationship="REALIZATION">
+      <point x="0.0" y="-155.5" />
+      <point x="1252.75" y="68.0" />
+      <point x="1033.5" y="68.0" />
+      <point x="0.0" y="29.5" />
+    </edge>
+    <edge source="com.vro.personalraytracer.objects.lights.PointLight" target="com.vro.personalraytracer.objects.lights.Light" relationship="GENERALIZATION">
+      <point x="0.0" y="-68.0" />
+      <point x="413.0" y="1165.0" />
+      <point x="246.5" y="1165.0" />
+      <point x="0.0" y="80.5" />
+    </edge>
+    <edge source="com.vro.personalraytracer.objects.Model3D" target="com.vro.personalraytracer.objects.Object3D" relationship="GENERALIZATION">
+      <point x="0.0" y="-105.5" />
+      <point x="596.0" y="654.0" />
+      <point x="814.25" y="654.0" />
+      <point x="0.0" y="268.0" />
+    </edge>
+    <edge source="com.vro.personalraytracer.objects.Camera" target="com.vro.personalraytracer.objects.Object3D" relationship="GENERALIZATION">
+      <point x="0.0" y="-230.5" />
+      <point x="1464.0" y="654.0" />
+      <point x="814.25" y="654.0" />
+      <point x="0.0" y="268.0" />
+    </edge>
+    <edge source="com.vro.personalraytracer.objects.lights.Light" target="com.vro.personalraytracer.objects.Object3D" relationship="GENERALIZATION">
+      <point x="0.0" y="-80.5" />
+      <point x="246.5" y="654.0" />
+      <point x="814.25" y="654.0" />
+      <point x="0.0" y="268.0" />
+    </edge>
+    <edge source="com.vro.personalraytracer.objects.lights.DirectionalLight" target="com.vro.personalraytracer.objects.lights.Light" relationship="GENERALIZATION">
+      <point x="5.684341886080802E-14" y="-93.0" />
+      <point x="80.0" y="1165.0" />
+      <point x="246.5" y="1165.0" />
+      <point x="0.0" y="80.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.30119854090672227" showDependencies="false" x="988.5" y="946.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

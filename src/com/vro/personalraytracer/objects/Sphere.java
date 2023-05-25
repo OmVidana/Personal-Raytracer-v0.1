@@ -7,7 +7,9 @@ import com.vro.personalraytracer.tools.Vector3D;
 import java.awt.*;
 
 /**
- * The type Sphere.
+ * Class Sphere which inherits from Object3D.
+ *
+ * @author Omar Vidaña Rodríguez
  */
 public class Sphere extends Object3D {
     private double radius;
@@ -17,66 +19,11 @@ public class Sphere extends Object3D {
      *
      * @param center the center
      * @param radius the radius
-     */
-    public Sphere(Vector3D center, double radius, Vector3D scale) {
-        super(center, scale, new Color(0, 0, 0));
-        setRadius(radius + (scale.getX() + scale.getY() + scale.getZ()) / 3);
-    }
-
-    /**
-     * Instantiates a new Sphere.
-     *
-     * @param center the center
-     * @param radius the radius
      * @param color  the color
      */
-    public Sphere(Vector3D center, double radius, Vector3D scale, Color color) {
-        super(center, scale, color);
-        setRadius(radius + (scale.getX() + scale.getY() + scale.getZ()) / 3);
-    }
-
-    /**
-     * Instantiates a new Sphere.
-     *
-     * @param center the center
-     * @param radius the radius
-     * @param red    the red
-     * @param green  the green
-     * @param blue   the blue
-     */
-    public Sphere(Vector3D center, double radius, Vector3D scale, int red, int green, int blue) {
-        super(center, scale, new Color(red, green, blue));
-        setRadius(radius + (scale.getX() + scale.getY() + scale.getZ()) / 3);
-    }
-
-    /**
-     * Instantiates a new Sphere.
-     *
-     * @param x      the x
-     * @param y      the y
-     * @param z      the z
-     * @param radius the radius
-     * @param color  the color
-     */
-    public Sphere(double x, double y, double z, double radius, Vector3D scale, Color color) {
-        super(new Vector3D(x, y, z), scale, color);
-        setRadius(radius + (scale.getX() + scale.getY() + scale.getZ()) / 3);
-    }
-
-    /**
-     * Instantiates a new Sphere.
-     *
-     * @param x      the x
-     * @param y      the y
-     * @param z      the z
-     * @param radius the radius
-     * @param red    the red
-     * @param green  the green
-     * @param blue   the blue
-     */
-    public Sphere(double x, double y, double z, double radius, Vector3D scale, int red, int green, int blue) {
-        super(new Vector3D(x, y, z), scale, new Color(red, green, blue));
-        setRadius(radius + (scale.getX() + scale.getY() + scale.getZ()) / 3);
+    public Sphere(Vector3D center, double radius, Color color, boolean isReflective, double reflectiveK, boolean isRefractive, double refractiveK) {
+        super(center, color, isReflective, reflectiveK, isRefractive, refractiveK);
+        setRadius(radius);
     }
 
     @Override
@@ -121,13 +68,13 @@ public class Sphere extends Object3D {
 
     @Override
     public void increaseSize(Vector3D scale) {
-        double length = (scale.getX() + scale.getY() + scale.getZ()) / 3;
+        double length = (scale.getX() + scale.getY() + scale.getZ());
         setRadius(getRadius() + length);
     }
 
     @Override
     public void decreaseSize(Vector3D scale) {
-        double length = (scale.getX() + scale.getY() + scale.getZ()) / 3;
+        double length = (scale.getX() + scale.getY() + scale.getZ());
         setRadius(getRadius() - length);
     }
 }
